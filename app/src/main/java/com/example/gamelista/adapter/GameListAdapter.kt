@@ -1,16 +1,12 @@
 package com.example.gamelista.adapter
 
-import android.app.AlertDialog
-import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.example.gamelista.FavFragment
 import com.example.gamelista.Game
 import com.example.gamelista.R
 
 class GameListAdapter(
-    private val context: Context,
     private var gameList: List<Game>,
     private val onClickListener: (Game) -> Unit,
     private val onClickStarListener: (Game) -> Unit,

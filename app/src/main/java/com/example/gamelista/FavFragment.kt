@@ -32,7 +32,7 @@ class FavFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
 
         _binding = FragmentFavBinding.inflate(inflater, container, false)
         return binding.root
@@ -68,7 +68,6 @@ class FavFragment : Fragment() {
 
     private fun initRecyclerView() {
         adapter = GameListAdapter(
-            context = requireContext(),
             gameList = myGameMutableList,
             onClickListener = { onItemSelected(it) },
             onClickStarListener = { onFavItem(it) },

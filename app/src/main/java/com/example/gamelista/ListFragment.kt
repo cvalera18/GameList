@@ -12,9 +12,7 @@ import androidx.core.widget.addTextChangedListener
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.gamelista.adapter.GameListAdapter
-import com.example.gamelista.databinding.ActivityMainBinding
 import com.example.gamelista.databinding.FragmentListBinding
-import java.text.FieldPosition
 
 class ListFragment : Fragment() {
     private var _binding: FragmentListBinding? = null
@@ -30,7 +28,7 @@ class ListFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         _binding = FragmentListBinding.inflate(inflater, container, false)
         return binding.root
     }
@@ -65,7 +63,6 @@ class ListFragment : Fragment() {
 
     private fun initRecyclerView() {
         adapter = GameListAdapter(
-            context = requireContext(),
             gameList = gameMutableList,
             onClickListener = { onItemSelected(it) },
             onClickStarListener = { onFavItem(it) },
