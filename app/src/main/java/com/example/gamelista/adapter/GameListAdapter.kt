@@ -10,7 +10,8 @@ class GameListAdapter(
     private var gameList: List<Game>,
     private val onClickListener: (Game) -> Unit,
     private val onClickStarListener: (Game) -> Unit,
-    private val onClickDeletedListener: (Game) -> Unit
+    private val onClickDeletedListener: (Game) -> Unit,
+    private val onAddToListListener: (Game) -> Unit
 ) : RecyclerView.Adapter<GameListViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): GameListViewHolder {
@@ -26,7 +27,7 @@ class GameListAdapter(
     override fun onBindViewHolder(holder: GameListViewHolder, position: Int) {
         val item = gameList[position]
         holder.render(
-            item, onClickListener, onClickStarListener, onClickDeletedListener
+            item, onClickListener, onClickStarListener, onClickDeletedListener, onAddToListListener
         )
     }
 

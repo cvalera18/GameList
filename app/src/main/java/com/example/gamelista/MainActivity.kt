@@ -25,9 +25,18 @@ class MainActivity : AppCompatActivity() {
                 return@OnNavigationItemSelectedListener true
             }
 
-            R.id.myListFragment -> {
+            R.id.favFragment -> {
                 supportFragmentManager.commit {
                     replace<FavFragment>(R.id.frameContainer)
+                    setReorderingAllowed(true)
+                    addToBackStack("replacement")
+                }
+                return@OnNavigationItemSelectedListener true
+            }
+
+            R.id.myListFragment -> {
+                supportFragmentManager.commit {
+                    replace<MyListFragment>(R.id.frameContainer)
                     setReorderingAllowed(true)
                     addToBackStack("replacement")
                 }

@@ -71,7 +71,8 @@ class FavFragment : Fragment() {
             gameList = myGameMutableList,
             onClickListener = { onItemSelected(it) },
             onClickStarListener = { onFavItem(it) },
-            onClickDeletedListener = { onDeletedItem(it) }
+            onClickDeletedListener = { onDeletedItem(it) },
+            onAddToListListener = {}
         )
 
         val decoration =

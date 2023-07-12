@@ -1,5 +1,6 @@
 package com.example.gamelista
 
+import android.app.AlertDialog
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
@@ -12,24 +13,30 @@ import androidx.core.widget.addTextChangedListener
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.gamelista.adapter.GameListAdapter
-import com.example.gamelista.databinding.FragmentListBinding
+import com.example.gamelista.databinding.FragmentFavBinding
+import com.example.gamelista.databinding.FragmentMyListBinding
 
-class ListFragment : Fragment() {
-    private var _binding: FragmentListBinding? = null
+
+class MyListFragment : Fragment() {
+
+    private var _binding: FragmentMyListBinding? = null
     private val binding get() = _binding!!
-    private var gameMutableList: MutableList<Game> = GameProvider.gameList.toMutableList()
+    private var myListMutableList: MutableList<Game> = MyListProvider.myListGameList.toMutableList()
     private lateinit var adapter: GameListAdapter
     private val llmanager = LinearLayoutManager(activity)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        //Toast.makeText(activity, "Segundo Fragment", Toast.LENGTH_SHORT).show()
+
     }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        _binding = FragmentListBinding.inflate(inflater, container, false)
+
+        _binding = FragmentMyListBinding.inflate(inflater, container, false)
         return binding.root
     }
 
@@ -42,7 +49,7 @@ class ListFragment : Fragment() {
 
     private fun configSwipe() {
 
-        binding.swipe.setColorSchemeResources(R.color.grey, R.color.blueoscuro)
+        binding.swipe.setColorSchemeResources(R.color.green, R.color.blueoscuro)
         binding.swipe.setOnRefreshListener {
 
             Handler(Looper.getMainLooper()).postDelayed({
@@ -54,7 +61,7 @@ class ListFragment : Fragment() {
     private fun configFilter() {
         binding.etFilter.addTextChangedListener { userFilter ->
             val gameFiltered =
-                gameMutableList.filter { game ->
+                myListMutableList.filter { game ->
                     game.titulo.lowercase().contains(userFilter.toString().lowercase())
                 }
             adapter.updateGames(gameFiltered)
@@ -63,39 +70,47 @@ class ListFragment : Fragment() {
 
     private fun initRecyclerView() {
         adapter = GameListAdapter(
-            gameList = gameMutableList,
+            gameList = myListMutableList,
             onClickListener = { onItemSelected(it) },
             onClickStarListener = { onFavItem(it) },
             onClickDeletedListener = { onDeletedItem(it) },
-            onAddToListListener = {onListedItem(it)}
+            onAddToListListener = {}
         )
 
-
-        val decoration = DividerItemDecoration(activity, llmanager.orientation)
+        val decoration =
+            DividerItemDecoration(binding.recyclerGameList.context, llmanager.orientation)
         binding.recyclerGameList.layoutManager = llmanager
         binding.recyclerGameList.adapter = adapter
         binding.recyclerGameList.addItemDecoration(decoration)
-
     }
 
     private fun onFavItem(game: Game) {
         MyGameProvider.myGameList.add(game)
-        adapter.notifyDataSetChanged()
     }
-
-    private fun onListedItem(game: Game) {
-        MyListProvider.myListGameList.add(game)
-        adapter.notifyDataSetChanged()
-    }
-
-    private fun onDeletedItem(game: Game) {
-        MyGameProvider.myGameList.remove(game)
-        game.fav=false
-        adapter.notifyDataSetChanged()
-    }
-
 
     private fun onItemSelected(game: Game) {
         Toast.makeText(activity, game.titulo, Toast.LENGTH_SHORT).show()
     }
+
+//    private fun onDeletedItem(game: Game) {
+//        MyGameProvider.myGameList.remove(game)
+//        //adapter.notifyDataSetChanged()
+//        adapter.updateGames(MyGameProvider.myGameList)
+//    }
+
+    private fun onDeletedItem(game: Game) {
+        val alertDialog = AlertDialog.Builder(context)
+            .setTitle("Confirmar eliminación")
+            .setMessage("¿Estás seguro de que quieres eliminar este juego de la lista de favoritos?")
+            .setPositiveButton("Eliminar") { _, _ ->
+                // Acción de eliminación del juego
+                MyListProvider.myListGameList.remove(game)
+                game.fav=false
+                adapter.updateGames(MyListProvider.myListGameList)
+            }
+            .setNegativeButton("Cancelar", null)
+            .create()
+        alertDialog.show()
+    }
+
 }

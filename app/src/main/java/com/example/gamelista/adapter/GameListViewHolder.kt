@@ -1,17 +1,11 @@
 package com.example.gamelista.adapter
 
-import android.app.AlertDialog
-import android.content.Context
 import android.view.View
-import android.widget.ImageView
 import androidx.appcompat.widget.PopupMenu
 import androidx.core.content.ContextCompat
-import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
 import com.bumptech.glide.Glide
 import com.example.gamelista.Game
-import com.example.gamelista.GameProvider.Companion.gameList
-import com.example.gamelista.MyGameProvider
 import com.example.gamelista.R
 import com.example.gamelista.databinding.ItemGameListBinding
 
@@ -27,7 +21,8 @@ class GameListViewHolder(
         gameListModel: Game,
         onClickListener: (Game) -> Unit,
         onClickStarListener: (Game) -> Unit,
-        onClickDeletedListener: (Game) -> Unit
+        onClickDeletedListener: (Game) -> Unit,
+        onAddToListListener: (Game) -> Unit
     ) {
 
         binding.tvGame.text = gameListModel.titulo
@@ -44,6 +39,7 @@ class GameListViewHolder(
                     R.drawable.check_circle_outline_24
                 )
             )
+
         } else {
             binding.ivCircle.setImageDrawable(
                 ContextCompat.getDrawable(
@@ -78,12 +74,10 @@ class GameListViewHolder(
                 onClickStarListener.invoke(gameListModel)
                 binding.ivStar.setImageDrawable(it.context.getDrawable(R.drawable.baseline_star_24))
             } else {
-                //adapter.showConfirmationDialog(gameListModel)
                 onClickDeletedListener(gameListModel)
-                //gameListModel.fav = false
-                //binding.ivStar.setImageDrawable(it.context.getDrawable(R.drawable.baseline_star_outline_24))
             }
         }
+
 
     }
 
@@ -102,7 +96,6 @@ class GameListViewHolder(
 
                 R.id.status_completed -> {
                     game.setStatusGame("Completado")
-
                     adapter.notifyDataSetChanged()
                     true
                 }
