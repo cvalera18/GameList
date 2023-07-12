@@ -67,7 +67,9 @@ class ListFragment : Fragment() {
             onClickListener = { onItemSelected(it) },
             onClickStarListener = { onFavItem(it) },
             onClickDeletedListener = { onDeletedItem(it) },
-            onAddToListListener = {onListedItem(it)}
+            onAddToListListener = { game ->
+                onListedItem(game)
+            }
         )
 
 
@@ -90,7 +92,7 @@ class ListFragment : Fragment() {
 
     private fun onDeletedItem(game: Game) {
         MyGameProvider.myGameList.remove(game)
-        game.fav=false
+        game.fav = false
         adapter.notifyDataSetChanged()
     }
 

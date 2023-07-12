@@ -16,7 +16,6 @@ class GameListViewHolder(
 
     private val binding = ItemGameListBinding.bind(view)
 
-
     fun render(
         gameListModel: Game,
         onClickListener: (Game) -> Unit,
@@ -30,7 +29,7 @@ class GameListViewHolder(
         binding.tvPlatform.text = gameListModel.plataforma
         Glide.with(binding.ivGame.context).load(gameListModel.imagen).into(binding.ivGame)
         itemView.setOnClickListener { onClickListener(gameListModel) }
-        binding.ivCircle.setOnClickListener { showPopup(gameListModel) }
+        binding.ivCircle.setOnClickListener { showPopup(gameListModel, onAddToListListener) }
 
         if (gameListModel.status!="Sin Clasificar"){
             binding.ivCircle.setImageDrawable(
@@ -39,7 +38,6 @@ class GameListViewHolder(
                     R.drawable.check_circle_outline_24
                 )
             )
-
         } else {
             binding.ivCircle.setImageDrawable(
                 ContextCompat.getDrawable(
@@ -48,7 +46,6 @@ class GameListViewHolder(
                 )
             )
         }
-
 
         if (!gameListModel.fav) {
             binding.ivStar.setImageDrawable(
@@ -82,7 +79,7 @@ class GameListViewHolder(
     }
 
 
-    private fun showPopup(game: Game) {
+    private fun showPopup(game: Game, onAddToListListener: (Game) -> Unit) {
         val popupMenu = PopupMenu(binding.ivCircle.context, binding.ivCircle)
         popupMenu.menuInflater.inflate(R.menu.status_menu, popupMenu.menu)
 
@@ -90,30 +87,35 @@ class GameListViewHolder(
             when (item.itemId) {
                 R.id.status_playing -> {
                     game.setStatusGame("Jugando")
+                    onAddToListListener.invoke(game)
                     adapter.notifyDataSetChanged()
                     true
                 }
 
                 R.id.status_completed -> {
                     game.setStatusGame("Completado")
+                    onAddToListListener.invoke(game)
                     adapter.notifyDataSetChanged()
                     true
                 }
 
                 R.id.status_sinclasificar -> {
                     game.setStatusGame("Sin Clasificar")
+                    onAddToListListener.invoke(game)
                     adapter.notifyDataSetChanged()
                     true
                 }
 
                 R.id.status_pendiente -> {
                     game.setStatusGame("Pendiente")
+                    onAddToListListener.invoke(game)
                     adapter.notifyDataSetChanged()
                     true
                 }
 
                 R.id.status_abandonado -> {
                     game.setStatusGame("Abandonado")
+                    onAddToListListener.invoke(game)
                     adapter.notifyDataSetChanged()
                     true
                 }
