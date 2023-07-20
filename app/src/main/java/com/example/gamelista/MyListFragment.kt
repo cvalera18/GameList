@@ -89,33 +89,24 @@ class MyListFragment : Fragment() {
     }
 
     private fun onListedItem(game: Game, status: GameStatus) {
-        MyListProvider.addOrUpdateGame(game, status)
-        adapter.notifyDataSetChanged()
+        if (status == GameStatus.SIN_CLASIFICAR){
+            MyListProvider.deleteGame(game, status)
+            adapter.notifyDataSetChanged()
+        } else {
+            MyListProvider.addOrUpdateGame(game, status)
+            adapter.notifyDataSetChanged()
+
+        }
     }
 
     private fun onItemSelected(game: Game) {
         Toast.makeText(activity, game.titulo, Toast.LENGTH_SHORT).show()
     }
 
-//    private fun onDeletedItem(game: Game) {
-//        MyGameProvider.myGameList.remove(game)
-//        //adapter.notifyDataSetChanged()
-//        adapter.updateGames(MyGameProvider.myGameList)
-//    }
-
     private fun onDeletedItem(game: Game) {
-        val alertDialog = AlertDialog.Builder(context)
-            .setTitle("Confirmar eliminación")
-            .setMessage("¿Estás seguro de que quieres eliminar este juego de la lista de favoritos?")
-            .setPositiveButton("Eliminar") { _, _ ->
-                // Acción de eliminación del juego
-                MyListProvider.myListGameList.remove(game)
-                game.fav=false
-                adapter.updateGames(MyListProvider.myListGameList)
-            }
-            .setNegativeButton("Cancelar", null)
-            .create()
-        alertDialog.show()
+        MyGameProvider.myGameList.remove(game)
+        game.fav = false
+        adapter.notifyDataSetChanged()
     }
 
 }

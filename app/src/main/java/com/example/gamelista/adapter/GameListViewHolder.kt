@@ -97,7 +97,8 @@ class GameListViewHolder(
                 }
 
                 R.id.status_sinclasificar -> {
-                    game.setStatusGame("Sin Clasificar")
+//                    game.setStatusGame("Sin Clasificar")
+                    onAddToListListener.invoke(game, GameStatus.SIN_CLASIFICAR)
                     adapter.notifyDataSetChanged()
                     true
                 }

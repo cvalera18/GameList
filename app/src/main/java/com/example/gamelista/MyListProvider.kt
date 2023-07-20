@@ -18,5 +18,10 @@ class MyListProvider {
                 myListGameList.add(game)
             }
         }
+
+        fun deleteGame(game: Game, status: GameStatus){
+                game.setStatusGame(status.value)
+                myListGameList.remove(game)
+        }
     }
 }
