@@ -6,6 +6,7 @@ import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
 import com.bumptech.glide.Glide
 import com.example.gamelista.Game
+import com.example.gamelista.GameStatus
 import com.example.gamelista.R
 import com.example.gamelista.databinding.ItemGameListBinding
 
@@ -21,7 +22,7 @@ class GameListViewHolder(
         onClickListener: (Game) -> Unit,
         onClickStarListener: (Game) -> Unit,
         onClickDeletedListener: (Game) -> Unit,
-        onAddToListListener: (Game) -> Unit
+        onAddToListListener: (Game, status: GameStatus) -> Unit
     ) {
 
         binding.tvGame.text = gameListModel.titulo
@@ -79,44 +80,35 @@ class GameListViewHolder(
     }
 
 
-    private fun showPopup(game: Game, onAddToListListener: (Game) -> Unit) {
+    private fun showPopup(game: Game, onAddToListListener: (Game, status: GameStatus) -> Unit) {
         val popupMenu = PopupMenu(binding.ivCircle.context, binding.ivCircle)
         popupMenu.menuInflater.inflate(R.menu.status_menu, popupMenu.menu)
 
         popupMenu.setOnMenuItemClickListener { item ->
             when (item.itemId) {
                 R.id.status_playing -> {
-                    game.setStatusGame("Jugando")
-                    onAddToListListener.invoke(game)
-                    adapter.notifyDataSetChanged()
+                    onAddToListListener.invoke(game, GameStatus.JUGANDO)
                     true
                 }
 
                 R.id.status_completed -> {
-                    game.setStatusGame("Completado")
-                    onAddToListListener.invoke(game)
-                    adapter.notifyDataSetChanged()
+                    onAddToListListener.invoke(game, GameStatus.COMPLETADO)
                     true
                 }
 
                 R.id.status_sinclasificar -> {
                     game.setStatusGame("Sin Clasificar")
-                    onAddToListListener.invoke(game)
                     adapter.notifyDataSetChanged()
                     true
                 }
 
                 R.id.status_pendiente -> {
-                    game.setStatusGame("Pendiente")
-                    onAddToListListener.invoke(game)
-                    adapter.notifyDataSetChanged()
+                    onAddToListListener.invoke(game, GameStatus.PENDIENTE)
                     true
                 }
 
                 R.id.status_abandonado -> {
-                    game.setStatusGame("Abandonado")
-                    onAddToListListener.invoke(game)
-                    adapter.notifyDataSetChanged()
+                    onAddToListListener.invoke(game, GameStatus.ABANDONADO)
                     true
                 }
 

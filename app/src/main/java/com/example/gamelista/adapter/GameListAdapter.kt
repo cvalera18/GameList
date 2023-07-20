@@ -4,6 +4,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.gamelista.Game
+import com.example.gamelista.GameStatus
 import com.example.gamelista.R
 
 class GameListAdapter(
@@ -11,7 +12,7 @@ class GameListAdapter(
     private val onClickListener: (Game) -> Unit,
     private val onClickStarListener: (Game) -> Unit,
     private val onClickDeletedListener: (Game) -> Unit,
-    private val onAddToListListener: (Game) -> Unit
+    private val onAddToListListener: (Game, status: GameStatus) -> Unit
 ) : RecyclerView.Adapter<GameListViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): GameListViewHolder {

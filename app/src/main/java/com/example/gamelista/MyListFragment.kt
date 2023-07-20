@@ -74,7 +74,7 @@ class MyListFragment : Fragment() {
             onClickListener = { onItemSelected(it) },
             onClickStarListener = { onFavItem(it) },
             onClickDeletedListener = { onDeletedItem(it) },
-            onAddToListListener = {}
+            onAddToListListener = { game, status -> onListedItem(game, status) }
         )
 
         val decoration =
@@ -86,6 +86,11 @@ class MyListFragment : Fragment() {
 
     private fun onFavItem(game: Game) {
         MyGameProvider.myGameList.add(game)
+    }
+
+    private fun onListedItem(game: Game, status: GameStatus) {
+        MyListProvider.addOrUpdateGame(game, status)
+        adapter.notifyDataSetChanged()
     }
 
     private fun onItemSelected(game: Game) {
