@@ -2,7 +2,7 @@ package com.example.gamelista
 
 class MyListProvider {
     companion object{
-        val myListGameList = mutableListOf<Game>()
+        val myListGameList: MutableList<Game> = mutableListOf()
 
         fun addOrUpdateGame(game: Game, status: GameStatus) {
             game.setStatusGame(status.value)

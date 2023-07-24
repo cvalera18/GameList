@@ -91,12 +91,14 @@ class MyListFragment : Fragment() {
     private fun onListedItem(game: Game, status: GameStatus) {
         if (status == GameStatus.SIN_CLASIFICAR){
             MyListProvider.deleteGame(game, status)
-            adapter.notifyDataSetChanged()
+            adapter.updateGames(MyListProvider.myListGameList)
+
         } else {
             MyListProvider.addOrUpdateGame(game, status)
-            adapter.notifyDataSetChanged()
+//            adapter.notifyDataSetChanged()
 
         }
+        adapter.notifyDataSetChanged()
     }
 
     private fun onItemSelected(game: Game) {
