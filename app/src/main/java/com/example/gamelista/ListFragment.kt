@@ -84,8 +84,10 @@ class ListFragment : Fragment() {
     }
 
     private fun onListedItem(game: Game, status: GameStatus) {
-        MyListProvider.addOrUpdateGame(game, status)
-        adapter.notifyDataSetChanged()
+        if (status != GameStatus.SIN_CLASIFICAR){
+            MyListProvider.addOrUpdateGame(game, status)
+            adapter.notifyDataSetChanged()
+        }
     }
 
     private fun onDeletedItem(game: Game) {

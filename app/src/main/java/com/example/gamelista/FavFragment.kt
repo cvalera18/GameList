@@ -72,7 +72,7 @@ class FavFragment : Fragment() {
             onClickListener = { onItemSelected(it) },
             onClickStarListener = { onFavItem(it) },
             onClickDeletedListener = { onDeletedItem(it) },
-            onAddToListListener = { game, status: GameStatus -> onListedItem(game, status) }
+            onAddToListListener = { game, status -> onListedItem(game, status) }
         )
 
         val decoration =
@@ -90,14 +90,15 @@ class FavFragment : Fragment() {
         Toast.makeText(activity, game.titulo, Toast.LENGTH_SHORT).show()
     }
 
-//    private fun onDeletedItem(game: Game) {
-//        MyGameProvider.myGameList.remove(game)
-//        //adapter.notifyDataSetChanged()
-//        adapter.updateGames(MyGameProvider.myGameList)
-//    }
-
     private fun onListedItem(game: Game, status: GameStatus) {
-        MyListProvider.myListGameList.add(game)
+        if (status == GameStatus.SIN_CLASIFICAR){
+            MyListProvider.deleteGame(game, status)
+            //adapter.updateGames(MyListProvider.myListGameList)
+
+        } else {
+            MyListProvider.addOrUpdateGame(game, status)
+
+        }
         adapter.notifyDataSetChanged()
     }
 
