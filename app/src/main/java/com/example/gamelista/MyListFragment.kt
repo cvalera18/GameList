@@ -9,7 +9,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.core.os.bundleOf
 import androidx.core.widget.addTextChangedListener
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.gamelista.adapter.GameListAdapter
@@ -23,7 +25,6 @@ class MyListFragment : Fragment() {
     private val binding get() = _binding!!
     private var myListMutableList: MutableList<Game> = MyListProvider.myListGameList.toMutableList()
     private lateinit var adapter: GameListAdapter
-    private val llmanager = LinearLayoutManager(activity)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -69,6 +70,7 @@ class MyListFragment : Fragment() {
     }
 
     private fun initRecyclerView() {
+        val llmanager = LinearLayoutManager(requireContext())
         adapter = GameListAdapter(
             gameList = myListMutableList,
             onClickListener = { onItemSelected(it) },
@@ -102,7 +104,18 @@ class MyListFragment : Fragment() {
     }
 
     private fun onItemSelected(game: Game) {
-        Toast.makeText(activity, game.titulo, Toast.LENGTH_SHORT).show()
+        //Toast.makeText(activity, game.titulo, Toast.LENGTH_SHORT).show()
+        findNavController().navigate(
+            R.id.action_myListFragment_to_detailFragment, bundleOf(
+                "NAME" to game.titulo,
+                "PLAT" to game.plataforma,
+                "STATUS" to game.status,
+                "PIC" to game.imagen,
+                "SINOP" to game.sinopsis,
+                "DEV" to game.dev,
+                "FAV" to game.fav
+            )
+        )
     }
 
     private fun onDeletedItem(game: Game) {

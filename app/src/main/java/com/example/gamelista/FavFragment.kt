@@ -9,19 +9,32 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.core.os.bundleOf
 import androidx.core.widget.addTextChangedListener
+import androidx.navigation.findNavController
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.gamelista.adapter.GameListAdapter
 import com.example.gamelista.databinding.FragmentFavBinding
+import com.google.android.material.navigation.NavigationView
 
 class FavFragment : Fragment() {
 
+    lateinit var navigation: NavigationView
     private var _binding: FragmentFavBinding? = null
     private val binding get() = _binding!!
     private var myGameMutableList: MutableList<Game> = MyGameProvider.myGameList.toMutableList()
     private lateinit var adapter: GameListAdapter
-    private val llmanager = LinearLayoutManager(activity)
+
+//    private var mOnNavigationView = NavigationView.OnNavigationItemSelectedListener { item ->
+//        when (item.itemId){
+//            R.id.detailFragment -> {
+//
+//            }
+//        }
+//        false
+//    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -67,6 +80,7 @@ class FavFragment : Fragment() {
     }
 
     private fun initRecyclerView() {
+        val llmanager = LinearLayoutManager(requireContext())
         adapter = GameListAdapter(
             gameList = myGameMutableList,
             onClickListener = { onItemSelected(it) },
@@ -87,11 +101,22 @@ class FavFragment : Fragment() {
     }
 
     private fun onItemSelected(game: Game) {
-        Toast.makeText(activity, game.titulo, Toast.LENGTH_SHORT).show()
+        //Toast.makeText(activity, game.titulo, Toast.LENGTH_SHORT).show()
+        findNavController().navigate(
+            R.id.action_favFragment2_to_detailFragment, bundleOf(
+                "NAME" to game.titulo,
+                "PLAT" to game.plataforma,
+                "STATUS" to game.status,
+                "PIC" to game.imagen,
+                "SINOP" to game.sinopsis,
+                "DEV" to game.dev,
+                "FAV" to game.fav
+            )
+        )
     }
 
     private fun onListedItem(game: Game, status: GameStatus) {
-        if (status == GameStatus.SIN_CLASIFICAR){
+        if (status == GameStatus.SIN_CLASIFICAR) {
             MyListProvider.deleteGame(game, status)
             //adapter.updateGames(MyListProvider.myListGameList)
 
@@ -109,7 +134,7 @@ class FavFragment : Fragment() {
             .setPositiveButton("Eliminar") { _, _ ->
                 // Acción de eliminación del juego
                 MyGameProvider.myGameList.remove(game)
-                game.fav=false
+                game.fav = false
                 adapter.updateGames(MyGameProvider.myGameList)
             }
             .setNegativeButton("Cancelar", null)

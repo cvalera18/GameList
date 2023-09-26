@@ -1,0 +1,200 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/grey"
+    tools:context=".DetailFragment">
+
+    <TextView
+        android:id="@+id/tvGameName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:text="The Last of Us: Part 1"
+        android:fontFamily="@font/timmana"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toStartOf="@+id/ivStarDetail"
+        app:layout_constraintStart_toEndOf="@+id/ivBackArrow"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/ivGameDetail"
+        android:layout_width="198dp"
+        android:layout_height="203dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:src="@drawable/ic_launcher_background"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/ivBackArrow" />
+
+    <TextView
+        android:id="@+id/tvPlatformDetail"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:fontFamily="sans-serif-condensed-medium"
+        android:singleLine="true"
+        android:text="PLATAFORMA"
+        android:textColor="@color/grey2"
+        android:textSize="12sp"
+        app:layout_constraintStart_toEndOf="@+id/ivGameDetail"
+        app:layout_constraintTop_toBottomOf="@+id/tvGameName" />
+
+    <TextView
+        android:id="@+id/tvStatusDetail"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="ESTADO"
+        android:textColor="@color/grey2"
+        android:fontFamily="sans-serif-condensed-medium"
+        android:layout_marginStart="10dp"
+        android:textSize="12sp"
+        app:layout_constraintStart_toEndOf="@+id/ivGameDetail"
+        app:layout_constraintTop_toBottomOf="@+id/tvPlatformSpec" />
+
+    <TextView
+        android:id="@+id/tvPlatformSpec"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="PC"
+        android:textSize="20sp"
+        android:fontFamily="sans-serif-condensed-medium"
+        android:layout_marginStart="24dp"
+        app:layout_constraintStart_toEndOf="@+id/ivGameDetail"
+        app:layout_constraintTop_toBottomOf="@+id/tvPlatformDetail" />
+
+    <TextView
+        android:id="@+id/tvStatusSpec"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Completado"
+        android:textSize="24sp"
+        android:fontFamily="sans-serif-condensed-medium"
+        android:layout_marginStart="24dp"
+        app:layout_constraintStart_toEndOf="@+id/ivGameDetail"
+        app:layout_constraintTop_toBottomOf="@+id/tvStatusDetail" />
+
+    <TextView
+        android:id="@+id/tvDev"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:fontFamily="sans-serif-condensed-medium"
+        android:text="DESARROLLADOR"
+        android:textColor="@color/grey2"
+        android:textSize="12sp"
+        app:layout_constraintStart_toEndOf="@+id/ivGameDetail"
+        app:layout_constraintTop_toBottomOf="@+id/tvStatusSpec" />
+
+    <TextView
+        android:id="@+id/tvDevSpec"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="24dp"
+        android:fontFamily="sans-serif-condensed-medium"
+        android:text="Naughty Dog"
+        android:textSize="20sp"
+        app:layout_constraintStart_toEndOf="@+id/ivGameDetail"
+        app:layout_constraintTop_toBottomOf="@+id/tvDev" />
+
+    <TextView
+        android:id="@+id/tvLaunchDate"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:fontFamily="sans-serif-condensed-medium"
+        android:text="LANZAMIENTO"
+        android:textColor="@color/grey2"
+        android:textSize="12sp"
+        app:layout_constraintStart_toEndOf="@+id/ivGameDetail"
+        app:layout_constraintTop_toBottomOf="@+id/tvDevSpec" />
+
+    <TextView
+        android:id="@+id/tvLaunchDateSpec"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="24dp"
+        android:fontFamily="sans-serif-condensed-medium"
+        android:text="02/09/2023"
+        android:textSize="24sp"
+        app:layout_constraintStart_toEndOf="@+id/ivGameDetail"
+        app:layout_constraintTop_toBottomOf="@+id/tvLaunchDate" />
+
+    <TextView
+        android:id="@+id/tvSinopsis"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="sans-serif-condensed-medium"
+        android:text="LANZAMIENTO"
+        android:textColor="@color/grey2"
+        android:textSize="12sp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/ivGameDetail" />
+
+    <TextView
+        android:id="@+id/tvSinopsisSpec"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="10dp"
+        android:fontFamily="sans-serif-condensed-medium"
+        android:text="@string/tlou1sinopsis"
+        android:textColor="@color/blueoscuro"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:textSize="18sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tvSinopsis" />
+
+    <ImageView
+        android:id="@+id/ivCirclePoint"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:scaleType="center"
+        android:src="@drawable/baseline_circle_24"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tvSinopsisSpec"
+        app:tint="@color/green" />
+
+    <TextView
+        android:id="@+id/tvPoints"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/denk_one"
+        android:textColor="@color/white"
+        android:text="93"
+        android:textSize="36sp"
+        app:layout_constraintBottom_toBottomOf="@+id/ivCirclePoint"
+        app:layout_constraintEnd_toEndOf="@+id/ivCirclePoint"
+        app:layout_constraintStart_toStartOf="@+id/ivCirclePoint"
+        app:layout_constraintTop_toTopOf="@+id/ivCirclePoint" />
+
+    <ImageView
+        android:id="@+id/ivStarDetail"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="10dp"
+        android:src="@drawable/baseline_star_outline_24"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/ivBackArrow"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="10dp"
+        android:src="@drawable/arrow_back"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -5,7 +5,9 @@ data class Game(
     val imagen: String,
     val plataforma: String,
     var status: String,
-    var fav: Boolean
+    var fav: Boolean,
+    var sinopsis: String,
+    var dev: String
     ) {
     // Getter para status
     fun getStatusGame(): String {
