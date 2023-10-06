@@ -1,18 +1,17 @@
-package com.example.gamelista
+package com.example.gamelista.ui.detail
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
+import com.example.gamelista.R
 import com.example.gamelista.adapter.GameListAdapter
 import com.example.gamelista.databinding.FragmentDetailBinding
-import com.example.gamelista.databinding.FragmentFavBinding
 
 class DetailFragment : Fragment() {
 

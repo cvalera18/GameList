@@ -1,4 +1,4 @@
-package com.example.gamelista
+package com.example.gamelista.model
 
 enum class GameStatus(val value: String) {
     JUGANDO("Jugando"),

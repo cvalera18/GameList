@@ -7,12 +7,12 @@
 
     <fragment
         android:id="@+id/detailFragment"
-        android:name="com.example.gamelista.DetailFragment"
+        android:name="com.example.gamelista.ui.detail.DetailFragment"
         android:label="fragment_detail"
         tools:layout="@layout/fragment_detail" />
     <fragment
         android:id="@+id/favFragment"
-        android:name="com.example.gamelista.FavFragment"
+        android:name="com.example.gamelista.ui.favorites.FavFragment"
         android:label="fragment_fav"
         tools:layout="@layout/fragment_fav" >
         <action
@@ -21,7 +21,7 @@
     </fragment>
     <fragment
         android:id="@+id/myListFragment"
-        android:name="com.example.gamelista.MyListFragment"
+        android:name="com.example.gamelista.view.MyListFragment"
         android:label="fragment_my_list"
         tools:layout="@layout/fragment_my_list" >
         <action
@@ -31,7 +31,7 @@
 
     <fragment
         android:id="@+id/listFragment"
-        android:name="com.example.gamelista.ListFragment"
+        android:name="com.example.gamelista.ui.list.ListFragment"
         android:label="fragment_list"
         tools:layout="@layout/fragment_list" >
         <action

@@ -5,8 +5,8 @@ import androidx.appcompat.widget.PopupMenu
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
 import com.bumptech.glide.Glide
-import com.example.gamelista.Game
-import com.example.gamelista.GameStatus
+import com.example.gamelista.model.Game
+import com.example.gamelista.model.GameStatus
 import com.example.gamelista.R
 import com.example.gamelista.databinding.ItemGameListBinding
 
@@ -66,14 +66,7 @@ class GameListViewHolder(
 
         //Listener de la estrella
         binding.ivStar.setOnClickListener {
-
-            if (!gameListModel.fav) {
-                gameListModel.fav = true
-                onClickStarListener.invoke(gameListModel)
-                binding.ivStar.setImageDrawable(it.context.getDrawable(R.drawable.baseline_star_24))
-            } else {
-                onClickDeletedListener(gameListModel)
-            }
+            onClickStarListener.invoke(gameListModel)
         }
 
     }

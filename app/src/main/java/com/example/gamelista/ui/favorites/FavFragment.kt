@@ -1,4 +1,4 @@
-package com.example.gamelista
+package com.example.gamelista.ui.favorites
 
 import android.app.AlertDialog
 import android.os.Bundle
@@ -8,15 +8,19 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.core.os.bundleOf
 import androidx.core.widget.addTextChangedListener
-import androidx.navigation.findNavController
+import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.gamelista.model.GameStatus
+import com.example.gamelista.R
 import com.example.gamelista.adapter.GameListAdapter
 import com.example.gamelista.databinding.FragmentFavBinding
+import com.example.gamelista.model.Game
+import com.example.gamelista.model.MyGameProvider
+import com.example.gamelista.model.MyListProvider
 import com.google.android.material.navigation.NavigationView
 
 class FavFragment : Fragment() {
@@ -26,6 +30,8 @@ class FavFragment : Fragment() {
     private val binding get() = _binding!!
     private var myGameMutableList: MutableList<Game> = MyGameProvider.myGameList.toMutableList()
     private lateinit var adapter: GameListAdapter
+
+    private val viewModel: FavViewModel by viewModels()
 
 //    private var mOnNavigationView = NavigationView.OnNavigationItemSelectedListener { item ->
 //        when (item.itemId){
@@ -56,6 +62,13 @@ class FavFragment : Fragment() {
         configFilter()
         initRecyclerView()
         configSwipe()
+        observeState()
+    }
+
+    private fun observeState() {
+        viewModel.state.observe(viewLifecycleOwner) { state ->
+
+        }
     }
 
     private fun configSwipe() {
@@ -104,14 +117,14 @@ class FavFragment : Fragment() {
         //Toast.makeText(activity, game.titulo, Toast.LENGTH_SHORT).show()
         findNavController().navigate(
             R.id.action_favFragment2_to_detailFragment, bundleOf(
-                "NAME" to game.titulo,
-                "PLAT" to game.plataforma,
-                "STATUS" to game.status,
-                "PIC" to game.imagen,
-                "SINOP" to game.sinopsis,
-                "DEV" to game.dev,
-                "FAV" to game.fav
-            )
+        "NAME" to game.titulo,
+        "PLAT" to game.plataforma,
+        "STATUS" to game.status,
+        "PIC" to game.imagen,
+        "SINOP" to game.sinopsis,
+        "DEV" to game.dev,
+        "FAV" to game.fav
+        )
         )
     }
 

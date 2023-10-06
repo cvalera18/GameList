@@ -1,4 +1,4 @@
-package com.example.gamelista
+package com.example.gamelista.model
 
 class MyGameProvider {
     companion object{

@@ -3,8 +3,8 @@ package com.example.gamelista.adapter
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.example.gamelista.Game
-import com.example.gamelista.GameStatus
+import com.example.gamelista.model.Game
+import com.example.gamelista.model.GameStatus
 import com.example.gamelista.R
 
 class GameListAdapter(
@@ -32,7 +32,7 @@ class GameListAdapter(
         )
     }
 
-    fun updateGames(gameList:List<Game>){
+    fun updateGames(gameList:List<Game>){1
         this.gameList = gameList
         notifyDataSetChanged()
     }

@@ -1,8 +1,8 @@
-package com.example.gamelista
+package com.example.gamelista.model
 
 class GameProvider {
     companion object{
-        val gameList = listOf(
+        val modelGameList = listOf(
             Game(
                 "TLOU1",
                 "https://www.latercera.com/resizer/TlFBuDFLVW33bErsNfuY1TQ7RmM=/900x600/smart/cloudfront-us-east-1.images.arcpublishing.com/copesa/75WT2XHIENDGJP6WHWMGFOJLNQ.png",

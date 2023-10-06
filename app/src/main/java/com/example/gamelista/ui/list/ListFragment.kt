@@ -1,6 +1,5 @@
-package com.example.gamelista
+package com.example.gamelista.ui.list
 
-import android.app.AlertDialog
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
@@ -8,36 +7,38 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.core.os.bundleOf
 import androidx.core.widget.addTextChangedListener
+import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.gamelista.model.GameStatus
+import com.example.gamelista.R
 import com.example.gamelista.adapter.GameListAdapter
-import com.example.gamelista.databinding.FragmentFavBinding
-import com.example.gamelista.databinding.FragmentMyListBinding
+import com.example.gamelista.databinding.FragmentListBinding
+import com.example.gamelista.model.Game
+import com.example.gamelista.model.GameProvider
+import com.example.gamelista.model.MyGameProvider
+import com.example.gamelista.model.MyListProvider
 
-
-class MyListFragment : Fragment() {
-
-    private var _binding: FragmentMyListBinding? = null
+class ListFragment : Fragment() {
+    private var _binding: FragmentListBinding? = null
     private val binding get() = _binding!!
-    private var myListMutableList: MutableList<Game> = MyListProvider.myListGameList.toMutableList()
+    private var gameMutableList: MutableList<Game> = GameProvider.modelGameList.toMutableList()
     private lateinit var adapter: GameListAdapter
+    private val viewModel: ListViewModel by viewModels()
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        //Toast.makeText(activity, "Segundo Fragment", Toast.LENGTH_SHORT).show()
-
     }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-
-        _binding = FragmentMyListBinding.inflate(inflater, container, false)
+        _binding = FragmentListBinding.inflate(inflater, container, false)
         return binding.root
     }
 
@@ -46,11 +47,19 @@ class MyListFragment : Fragment() {
         configFilter()
         initRecyclerView()
         configSwipe()
+        observeGameList()
+        viewModel.getListGames()
+    }
+
+    private fun observeGameList() {
+        viewModel.gameList.observe(viewLifecycleOwner) { gameList ->
+            adapter.updateGames(gameList)
+        }
     }
 
     private fun configSwipe() {
 
-        binding.swipe.setColorSchemeResources(R.color.green, R.color.blueoscuro)
+        binding.swipe.setColorSchemeResources(R.color.grey, R.color.blueoscuro)
         binding.swipe.setOnRefreshListener {
 
             Handler(Looper.getMainLooper()).postDelayed({
@@ -61,52 +70,40 @@ class MyListFragment : Fragment() {
 
     private fun configFilter() {
         binding.etFilter.addTextChangedListener { userFilter ->
-            val gameFiltered =
-                myListMutableList.filter { game ->
-                    game.titulo.lowercase().contains(userFilter.toString().lowercase())
-                }
-            adapter.updateGames(gameFiltered)
+            viewModel.configFilter(userFilter.toString())
         }
     }
 
     private fun initRecyclerView() {
-        val llmanager = LinearLayoutManager(requireContext())
         adapter = GameListAdapter(
-            gameList = myListMutableList,
+            gameList = emptyList(),
             onClickListener = { onItemSelected(it) },
             onClickStarListener = { onFavItem(it) },
-            onClickDeletedListener = { onDeletedItem(it) },
+            onClickDeletedListener = { },
             onAddToListListener = { game, status -> onListedItem(game, status) }
         )
 
-        val decoration =
-            DividerItemDecoration(binding.recyclerGameList.context, llmanager.orientation)
+        val llmanager = LinearLayoutManager(requireContext())
+
+        val decoration = DividerItemDecoration(activity, llmanager.orientation)
         binding.recyclerGameList.layoutManager = llmanager
         binding.recyclerGameList.adapter = adapter
         binding.recyclerGameList.addItemDecoration(decoration)
+
     }
 
     private fun onFavItem(game: Game) {
-        MyGameProvider.myGameList.add(game)
+        viewModel.onFavItem(game)
     }
 
     private fun onListedItem(game: Game, status: GameStatus) {
-        if (status == GameStatus.SIN_CLASIFICAR){
-            MyListProvider.deleteGame(game, status)
-            adapter.updateGames(MyListProvider.myListGameList)
-
-        } else {
-            MyListProvider.addOrUpdateGame(game, status)
-//            adapter.notifyDataSetChanged()
-
-        }
-        adapter.notifyDataSetChanged()
+        viewModel.onListedItem(game, status)
     }
 
     private fun onItemSelected(game: Game) {
         //Toast.makeText(activity, game.titulo, Toast.LENGTH_SHORT).show()
         findNavController().navigate(
-            R.id.action_myListFragment_to_detailFragment, bundleOf(
+            R.id.action_listFragment_to_detailFragment, bundleOf(
                 "NAME" to game.titulo,
                 "PLAT" to game.plataforma,
                 "STATUS" to game.status,
@@ -117,11 +114,4 @@ class MyListFragment : Fragment() {
             )
         )
     }
-
-    private fun onDeletedItem(game: Game) {
-        MyGameProvider.myGameList.remove(game)
-        game.fav = false
-        adapter.notifyDataSetChanged()
-    }
-
 }
