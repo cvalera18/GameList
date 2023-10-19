@@ -3,20 +3,19 @@ package com.example.gamelista.view
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.activity.viewModels
-import androidx.lifecycle.Observer
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
 import com.example.gamelista.R
 import com.example.gamelista.databinding.ActivityMainBinding
 import com.example.gamelista.model.Game
-import com.example.gamelista.model.MyGameProvider
+import com.example.gamelista.model.FavGameProvider
 import com.example.gamelista.viewmodel.GameViewModel
 
 class MainActivity : AppCompatActivity() {
 
 
     private lateinit var binding: ActivityMainBinding
-    var myGameMutableList: MutableList<Game> = MyGameProvider.myGameList.toMutableList()
+    var myGameMutableList: MutableList<Game> = FavGameProvider.modelFavGameList.toMutableList()
 
     private val gameViewModel : GameViewModel by viewModels()
 

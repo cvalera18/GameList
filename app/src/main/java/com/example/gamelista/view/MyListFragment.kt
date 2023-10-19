@@ -17,7 +17,7 @@ import com.example.gamelista.R
 import com.example.gamelista.adapter.GameListAdapter
 import com.example.gamelista.databinding.FragmentMyListBinding
 import com.example.gamelista.model.Game
-import com.example.gamelista.model.MyGameProvider
+import com.example.gamelista.model.FavGameProvider
 import com.example.gamelista.model.MyListProvider
 
 
@@ -89,7 +89,7 @@ class MyListFragment : Fragment() {
     }
 
     private fun onFavItem(game: Game) {
-        MyGameProvider.myGameList.add(game)
+        FavGameProvider.modelFavGameList.add(game)
     }
 
     private fun onListedItem(game: Game, status: GameStatus) {
@@ -121,7 +121,7 @@ class MyListFragment : Fragment() {
     }
 
     private fun onDeletedItem(game: Game) {
-        MyGameProvider.myGameList.remove(game)
+        FavGameProvider.modelFavGameList.remove(game)
         game.fav = false
         adapter.notifyDataSetChanged()
     }

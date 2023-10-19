@@ -19,7 +19,7 @@ import com.example.gamelista.R
 import com.example.gamelista.adapter.GameListAdapter
 import com.example.gamelista.databinding.FragmentFavBinding
 import com.example.gamelista.model.Game
-import com.example.gamelista.model.MyGameProvider
+import com.example.gamelista.model.FavGameProvider
 import com.example.gamelista.model.MyListProvider
 import com.google.android.material.navigation.NavigationView
 
@@ -28,23 +28,13 @@ class FavFragment : Fragment() {
     lateinit var navigation: NavigationView
     private var _binding: FragmentFavBinding? = null
     private val binding get() = _binding!!
-    private var myGameMutableList: MutableList<Game> = MyGameProvider.myGameList.toMutableList()
+    private var myGameMutableList: MutableList<Game> = FavGameProvider.modelFavGameList.toMutableList()
     private lateinit var adapter: GameListAdapter
 
     private val viewModel: FavViewModel by viewModels()
 
-//    private var mOnNavigationView = NavigationView.OnNavigationItemSelectedListener { item ->
-//        when (item.itemId){
-//            R.id.detailFragment -> {
-//
-//            }
-//        }
-//        false
-//    }
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        //Toast.makeText(activity, "Segundo Fragment", Toast.LENGTH_SHORT).show()
 
     }
 
@@ -62,12 +52,13 @@ class FavFragment : Fragment() {
         configFilter()
         initRecyclerView()
         configSwipe()
-        observeState()
+        observeFavGameList()
+        viewModel.getListGames()
     }
 
-    private fun observeState() {
-        viewModel.state.observe(viewLifecycleOwner) { state ->
-
+    private fun observeFavGameList() {
+        viewModel.favGameList.observe(viewLifecycleOwner) { favGameList ->
+            adapter.updateGames(favGameList)
         }
     }
 
@@ -84,21 +75,17 @@ class FavFragment : Fragment() {
 
     private fun configFilter() {
         binding.etFilter.addTextChangedListener { userFilter ->
-            val gameFiltered =
-                myGameMutableList.filter { game ->
-                    game.titulo.lowercase().contains(userFilter.toString().lowercase())
-                }
-            adapter.updateGames(gameFiltered)
+            viewModel.configFilter(userFilter.toString())
         }
     }
 
     private fun initRecyclerView() {
         val llmanager = LinearLayoutManager(requireContext())
         adapter = GameListAdapter(
-            gameList = myGameMutableList,
+            gameList = emptyList(),
             onClickListener = { onItemSelected(it) },
             onClickStarListener = { onFavItem(it) },
-            onClickDeletedListener = { onDeletedItem(it) },
+            onClickDeletedListener = {  },
             onAddToListListener = { game, status -> onListedItem(game, status) }
         )
 
@@ -110,7 +97,22 @@ class FavFragment : Fragment() {
     }
 
     private fun onFavItem(game: Game) {
-        MyGameProvider.myGameList.add(game)
+
+        if (!game.fav){
+            viewModel.onFavItem(game)
+        } else {
+            val alertDialog = AlertDialog.Builder(context)
+                .setTitle("Confirmar eliminación")
+                .setMessage("¿Estás seguro de que quieres eliminar este juego de la lista de favoritos?")
+                .setPositiveButton("Eliminar") { _, _ ->
+                    // Acción de eliminación del juego
+                    viewModel.unFavItem(game)
+                }
+                .setNegativeButton("Cancelar", null)
+                .create()
+            alertDialog.show()
+        }
+
     }
 
     private fun onItemSelected(game: Game) {
@@ -129,30 +131,7 @@ class FavFragment : Fragment() {
     }
 
     private fun onListedItem(game: Game, status: GameStatus) {
-        if (status == GameStatus.SIN_CLASIFICAR) {
-            MyListProvider.deleteGame(game, status)
-            //adapter.updateGames(MyListProvider.myListGameList)
-
-        } else {
-            MyListProvider.addOrUpdateGame(game, status)
-
-        }
-        adapter.notifyDataSetChanged()
-    }
-
-    private fun onDeletedItem(game: Game) {
-        val alertDialog = AlertDialog.Builder(context)
-            .setTitle("Confirmar eliminación")
-            .setMessage("¿Estás seguro de que quieres eliminar este juego de la lista de favoritos?")
-            .setPositiveButton("Eliminar") { _, _ ->
-                // Acción de eliminación del juego
-                MyGameProvider.myGameList.remove(game)
-                game.fav = false
-                adapter.updateGames(MyGameProvider.myGameList)
-            }
-            .setNegativeButton("Cancelar", null)
-            .create()
-        alertDialog.show()
+        viewModel.onListedItem(game, status)
     }
 
 }

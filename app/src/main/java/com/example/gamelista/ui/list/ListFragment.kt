@@ -18,14 +18,10 @@ import com.example.gamelista.R
 import com.example.gamelista.adapter.GameListAdapter
 import com.example.gamelista.databinding.FragmentListBinding
 import com.example.gamelista.model.Game
-import com.example.gamelista.model.GameProvider
-import com.example.gamelista.model.MyGameProvider
-import com.example.gamelista.model.MyListProvider
 
 class ListFragment : Fragment() {
     private var _binding: FragmentListBinding? = null
     private val binding get() = _binding!!
-    private var gameMutableList: MutableList<Game> = GameProvider.modelGameList.toMutableList()
     private lateinit var adapter: GameListAdapter
     private val viewModel: ListViewModel by viewModels()
 

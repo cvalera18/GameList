@@ -1,14 +1,12 @@
 package com.example.gamelista.ui.list
 
-import androidx.core.widget.addTextChangedListener
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.example.gamelista.R
 import com.example.gamelista.model.Game
 import com.example.gamelista.model.GameProvider
 import com.example.gamelista.model.GameStatus
-import com.example.gamelista.model.MyGameProvider
+import com.example.gamelista.model.FavGameProvider
 import com.example.gamelista.model.MyListProvider
 
 class ListViewModel : ViewModel() {
@@ -26,9 +24,9 @@ class ListViewModel : ViewModel() {
 
         if (!game.fav) {
             currentGame.fav = true
-            MyGameProvider.myGameList.add(game)
+            FavGameProvider.modelFavGameList.add(game)
         } else {
-            MyGameProvider.myGameList.remove(game)
+            FavGameProvider.modelFavGameList.remove(game)
             currentGame.fav = false
         }
 
