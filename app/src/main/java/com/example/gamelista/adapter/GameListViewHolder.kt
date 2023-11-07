@@ -21,7 +21,6 @@ class GameListViewHolder(
         gameListModel: Game,
         onClickListener: (Game) -> Unit,
         onClickStarListener: (Game) -> Unit,
-        onClickDeletedListener: (Game) -> Unit,
         onAddToListListener: (Game, status: GameStatus) -> Unit
     ) {
 

@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
+import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
@@ -18,15 +19,16 @@ class DetailFragment : Fragment() {
     private val binding get() = _binding!!
     private var _binding: FragmentDetailBinding? = null
     private lateinit var adapter: GameListAdapter
-    private val llmanager = LinearLayoutManager(activity)
+    private val viewModel: DetailViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        }
+    }
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
-                              savedInstanceState: Bundle?
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
     ): View {
 
         _binding = FragmentDetailBinding.inflate(inflater, container, false)
@@ -37,15 +39,11 @@ class DetailFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         initInfo()
-//        val ID = arguments?.getString("ID")
-//        Toast.makeText(requireContext(), "ID = $ID", Toast.LENGTH_LONG).show()
         binding.ivBackArrow.setOnClickListener {
             findNavController().navigateUp()
         }
-
-
-
     }
+
     private fun initInfo() {
         val NAME = arguments?.getString("NAME")
         val PLAT = arguments?.getString("PLAT")

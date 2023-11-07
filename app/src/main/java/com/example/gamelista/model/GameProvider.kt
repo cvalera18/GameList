@@ -86,7 +86,7 @@ class GameProvider {
             ),
             Game("Watch_Dogs",
                 "https://cdn1.epicgames.com/ecebf45065bc4993abfe0e84c40ff18e/offer/WDOG_STD_Store_Landscape_2580x1450-2580x1450-3fd07dcc02e65aca288d794c177c7512.jpg",
-                "PC - PS4 - XBX360",
+                "PC-PS4-XBX360",
                 "Sin Clasificar",
                 false,
                 "En el juego eres Aiden Pearce, un brillante hacker y exmatón cuyo pasado delictivo provocó una violenta tragedia familiar. Ahora, en la búsqueda " +

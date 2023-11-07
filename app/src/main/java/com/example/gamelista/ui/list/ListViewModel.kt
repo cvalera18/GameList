@@ -19,7 +19,6 @@ class ListViewModel : ViewModel() {
     }
 
     fun onFavItem(game: Game) {
-
         val currentGame = GameProvider.modelGameList.first { it.titulo == game.titulo }
 
         if (!game.fav) {
@@ -29,7 +28,6 @@ class ListViewModel : ViewModel() {
             FavGameProvider.modelFavGameList.remove(game)
             currentGame.fav = false
         }
-
         _gameList.value = GameProvider.modelGameList
     }
 

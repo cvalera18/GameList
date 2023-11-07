@@ -11,7 +11,6 @@ class GameListAdapter(
     private var gameList: List<Game>,
     private val onClickListener: (Game) -> Unit,
     private val onClickStarListener: (Game) -> Unit,
-    private val onClickDeletedListener: (Game) -> Unit,
     private val onAddToListListener: (Game, status: GameStatus) -> Unit
 ) : RecyclerView.Adapter<GameListViewHolder>() {
 
@@ -28,11 +27,11 @@ class GameListAdapter(
     override fun onBindViewHolder(holder: GameListViewHolder, position: Int) {
         val item = gameList[position]
         holder.render(
-            item, onClickListener, onClickStarListener, onClickDeletedListener, onAddToListListener
+            item, onClickListener, onClickStarListener, onAddToListListener
         )
     }
 
-    fun updateGames(gameList:List<Game>){1
+    fun updateGames(gameList:List<Game>){
         this.gameList = gameList
         notifyDataSetChanged()
     }

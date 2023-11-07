@@ -74,10 +74,8 @@ class ListFragment : Fragment() {
         adapter = GameListAdapter(
             gameList = emptyList(),
             onClickListener = { onItemSelected(it) },
-            onClickStarListener = { onFavItem(it) },
-            onClickDeletedListener = { },
-            onAddToListListener = { game, status -> onListedItem(game, status) }
-        )
+            onClickStarListener = { onFavItem(it) }
+        ) { game, status -> onListedItem(game, status) }
 
         val llmanager = LinearLayoutManager(requireContext())
 
@@ -97,7 +95,6 @@ class ListFragment : Fragment() {
     }
 
     private fun onItemSelected(game: Game) {
-        //Toast.makeText(activity, game.titulo, Toast.LENGTH_SHORT).show()
         findNavController().navigate(
             R.id.action_listFragment_to_detailFragment, bundleOf(
                 "NAME" to game.titulo,

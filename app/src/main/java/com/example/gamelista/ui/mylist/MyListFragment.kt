@@ -1,4 +1,4 @@
-package com.example.gamelista.view
+package com.example.gamelista.ui.mylist
 
 import android.os.Bundle
 import android.os.Handler
@@ -9,6 +9,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.os.bundleOf
 import androidx.core.widget.addTextChangedListener
+import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -17,7 +18,6 @@ import com.example.gamelista.R
 import com.example.gamelista.adapter.GameListAdapter
 import com.example.gamelista.databinding.FragmentMyListBinding
 import com.example.gamelista.model.Game
-import com.example.gamelista.model.FavGameProvider
 import com.example.gamelista.model.MyListProvider
 
 
@@ -25,12 +25,11 @@ class MyListFragment : Fragment() {
 
     private var _binding: FragmentMyListBinding? = null
     private val binding get() = _binding!!
-    private var myListMutableList: MutableList<Game> = MyListProvider.myListGameList.toMutableList()
     private lateinit var adapter: GameListAdapter
+    private val viewModel: MyListViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        //Toast.makeText(activity, "Segundo Fragment", Toast.LENGTH_SHORT).show()
 
     }
 
@@ -38,7 +37,6 @@ class MyListFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-
         _binding = FragmentMyListBinding.inflate(inflater, container, false)
         return binding.root
     }
@@ -48,6 +46,14 @@ class MyListFragment : Fragment() {
         configFilter()
         initRecyclerView()
         configSwipe()
+        observeGameList()
+        viewModel.getListGames()
+    }
+
+    private fun observeGameList() {
+        viewModel.listedGameList.observe(viewLifecycleOwner) { listedGameList ->
+            adapter.updateGames(listedGameList)
+        }
     }
 
     private fun configSwipe() {
@@ -63,24 +69,18 @@ class MyListFragment : Fragment() {
 
     private fun configFilter() {
         binding.etFilter.addTextChangedListener { userFilter ->
-            val gameFiltered =
-                myListMutableList.filter { game ->
-                    game.titulo.lowercase().contains(userFilter.toString().lowercase())
-                }
-            adapter.updateGames(gameFiltered)
+            viewModel.configFilter(userFilter.toString())
         }
     }
 
     private fun initRecyclerView() {
-        val llmanager = LinearLayoutManager(requireContext())
         adapter = GameListAdapter(
-            gameList = myListMutableList,
+            gameList = emptyList(),
             onClickListener = { onItemSelected(it) },
-            onClickStarListener = { onFavItem(it) },
-            onClickDeletedListener = { onDeletedItem(it) },
-            onAddToListListener = { game, status -> onListedItem(game, status) }
-        )
+            onClickStarListener = { onFavItem(it) }
+        ) { game, status -> onListedItem(game, status) }
 
+        val llmanager = LinearLayoutManager(requireContext())
         val decoration =
             DividerItemDecoration(binding.recyclerGameList.context, llmanager.orientation)
         binding.recyclerGameList.layoutManager = llmanager
@@ -89,24 +89,14 @@ class MyListFragment : Fragment() {
     }
 
     private fun onFavItem(game: Game) {
-        FavGameProvider.modelFavGameList.add(game)
+        viewModel.onFavItem(game)
     }
 
     private fun onListedItem(game: Game, status: GameStatus) {
-        if (status == GameStatus.SIN_CLASIFICAR){
-            MyListProvider.deleteGame(game, status)
-            adapter.updateGames(MyListProvider.myListGameList)
-
-        } else {
-            MyListProvider.addOrUpdateGame(game, status)
-//            adapter.notifyDataSetChanged()
-
-        }
-        adapter.notifyDataSetChanged()
+        viewModel.onListedItem(game, status)
     }
 
     private fun onItemSelected(game: Game) {
-        //Toast.makeText(activity, game.titulo, Toast.LENGTH_SHORT).show()
         findNavController().navigate(
             R.id.action_myListFragment_to_detailFragment, bundleOf(
                 "NAME" to game.titulo,
@@ -119,11 +109,4 @@ class MyListFragment : Fragment() {
             )
         )
     }
-
-    private fun onDeletedItem(game: Game) {
-        FavGameProvider.modelFavGameList.remove(game)
-        game.fav = false
-        adapter.notifyDataSetChanged()
-    }
-
 }

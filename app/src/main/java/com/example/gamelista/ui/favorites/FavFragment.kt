@@ -20,7 +20,6 @@ import com.example.gamelista.adapter.GameListAdapter
 import com.example.gamelista.databinding.FragmentFavBinding
 import com.example.gamelista.model.Game
 import com.example.gamelista.model.FavGameProvider
-import com.example.gamelista.model.MyListProvider
 import com.google.android.material.navigation.NavigationView
 
 class FavFragment : Fragment() {
@@ -35,7 +34,6 @@ class FavFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
     }
 
     override fun onCreateView(
@@ -84,10 +82,8 @@ class FavFragment : Fragment() {
         adapter = GameListAdapter(
             gameList = emptyList(),
             onClickListener = { onItemSelected(it) },
-            onClickStarListener = { onFavItem(it) },
-            onClickDeletedListener = {  },
-            onAddToListListener = { game, status -> onListedItem(game, status) }
-        )
+            onClickStarListener = { onFavItem(it) }
+        ) { game, status -> onListedItem(game, status) }
 
         val decoration =
             DividerItemDecoration(binding.recyclerGameList.context, llmanager.orientation)
@@ -116,7 +112,6 @@ class FavFragment : Fragment() {
     }
 
     private fun onItemSelected(game: Game) {
-        //Toast.makeText(activity, game.titulo, Toast.LENGTH_SHORT).show()
         findNavController().navigate(
             R.id.action_favFragment2_to_detailFragment, bundleOf(
         "NAME" to game.titulo,

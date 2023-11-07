@@ -21,7 +21,7 @@
     </fragment>
     <fragment
         android:id="@+id/myListFragment"
-        android:name="com.example.gamelista.view.MyListFragment"
+        android:name="com.example.gamelista.ui.mylist.MyListFragment"
         android:label="fragment_my_list"
         tools:layout="@layout/fragment_my_list" >
         <action
