@@ -5,7 +5,6 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.gamelista.model.Game
 import com.example.gamelista.model.FavGameProvider
-import com.example.gamelista.model.GameProvider
 import com.example.gamelista.model.GameStatus
 import com.example.gamelista.model.MyListProvider
 

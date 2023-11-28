@@ -7,6 +7,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.inputmethod.EditorInfo
 import androidx.core.os.bundleOf
 import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.viewModels
@@ -25,10 +26,6 @@ class ListFragment : Fragment() {
     private lateinit var adapter: GameListAdapter
     private val viewModel: ListViewModel by viewModels()
 
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -69,6 +66,20 @@ class ListFragment : Fragment() {
             viewModel.configFilter(userFilter.toString())
         }
     }
+
+//    private fun configFilter() {
+//        binding.etFilter.setOnEditorActionListener { textView, actionId, keyEvent ->
+//            if (actionId == EditorInfo.IME_ACTION_DONE) {
+//                // La tecla Done fue presionada
+//                val userFilter = textView.text.toString()
+//                viewModel.configFilter(userFilter)
+//                true // Indica que el evento fue manejado
+//            } else {
+//                false // Indica que el evento no fue manejado
+//            }
+//        }
+//    }
+
 
     private fun initRecyclerView() {
         adapter = GameListAdapter(

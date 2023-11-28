@@ -18,7 +18,6 @@ import com.example.gamelista.R
 import com.example.gamelista.adapter.GameListAdapter
 import com.example.gamelista.databinding.FragmentMyListBinding
 import com.example.gamelista.model.Game
-import com.example.gamelista.model.MyListProvider
 
 
 class MyListFragment : Fragment() {

@@ -31,7 +31,7 @@ class GameListViewHolder(
         itemView.setOnClickListener { onClickListener(gameListModel) }
         binding.ivCircle.setOnClickListener { showPopup(gameListModel, onAddToListListener) }
 
-        if (gameListModel.status!="Sin Clasificar"){
+        if (gameListModel.status !="Sin Clasificar"){
             binding.ivCircle.setImageDrawable(
                 ContextCompat.getDrawable(
                     binding.ivCircle.context,

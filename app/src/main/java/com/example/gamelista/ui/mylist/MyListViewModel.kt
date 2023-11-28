@@ -3,6 +3,7 @@ package com.example.gamelista.ui.mylist
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.example.gamelista.data.Repository
 import com.example.gamelista.model.FavGameProvider
 import com.example.gamelista.model.Game
 import com.example.gamelista.model.GameStatus
@@ -10,6 +11,7 @@ import com.example.gamelista.model.MyListProvider
 
 class MyListViewModel : ViewModel() {
 
+    private val repository = Repository
     private val _listedGameList = MutableLiveData<List<Game>>(emptyList())
     val listedGameList: LiveData<List<Game>> = _listedGameList
 
@@ -39,12 +41,7 @@ class MyListViewModel : ViewModel() {
     }
 
     fun onListedItem(game: Game, status: GameStatus) {
-        if (status != GameStatus.SIN_CLASIFICAR) {
-            MyListProvider.addOrUpdateGame(game, status)
-        } else {
-            MyListProvider.deleteGame(game, status)
-        }
-        _listedGameList.value = MyListProvider.modelListedGameList
+        _listedGameList.value = repository.onListedItem(game, status)
     }
 
 }
