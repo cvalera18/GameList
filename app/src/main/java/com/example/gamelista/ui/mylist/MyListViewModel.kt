@@ -4,7 +4,6 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.gamelista.data.Repository
-import com.example.gamelista.model.FavGameProvider
 import com.example.gamelista.model.Game
 import com.example.gamelista.model.GameStatus
 import com.example.gamelista.model.MyListProvider
@@ -16,7 +15,9 @@ class MyListViewModel : ViewModel() {
     val listedGameList: LiveData<List<Game>> = _listedGameList
 
     fun getListGames() {
-        _listedGameList.value = MyListProvider.modelListedGameList
+//        _listedGameList.value = MyListProvider.modelListedGameList
+        val games = repository.getListedGames(GameStatus.SIN_CLASIFICAR)
+        _listedGameList.value = games
     }
 
     fun configFilter(userFilter: String) {
@@ -28,20 +29,27 @@ class MyListViewModel : ViewModel() {
     }
 
     fun onFavItem(game: Game) {
+        /*
         val currentGame = MyListProvider.modelListedGameList.first { it.titulo == game.titulo }
 
         if (!game.fav) {
-            currentGame.fav = true
-            FavGameProvider.modelFavGameList.add(game)
+        // FIXME
+        //            currentGame.fav = true
+        FavGameProvider.modelFavGameList.add(game)
         } else {
-            FavGameProvider.modelFavGameList.remove(game)
-            currentGame.fav = false
+        // FIXME
+        FavGameProvider.modelFavGameList.remove(game)
+        //            currentGame.fav = false
         }
         _listedGameList.value = MyListProvider.modelListedGameList
+        */
+        repository.onFavItem(game)
+        getListGames()
     }
 
     fun onListedItem(game: Game, status: GameStatus) {
         _listedGameList.value = repository.onListedItem(game, status)
+        getListGames()
     }
 
 }

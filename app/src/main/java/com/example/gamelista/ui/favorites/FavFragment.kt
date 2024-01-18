@@ -24,7 +24,6 @@ import com.google.android.material.navigation.NavigationView
 
 class FavFragment : Fragment() {
 
-    lateinit var navigation: NavigationView
     private var _binding: FragmentFavBinding? = null
     private val binding get() = _binding!!
     private var myGameMutableList: MutableList<Game> = FavGameProvider.modelFavGameList.toMutableList()
@@ -40,7 +39,6 @@ class FavFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-
         _binding = FragmentFavBinding.inflate(inflater, container, false)
         return binding.root
     }
@@ -54,6 +52,11 @@ class FavFragment : Fragment() {
         viewModel.getListGames()
     }
 
+    override fun onResume() {
+    super.onResume()
+    viewModel.getListGames()
+    }
+
     private fun observeFavGameList() {
         viewModel.favGameList.observe(viewLifecycleOwner) { favGameList ->
             adapter.updateGames(favGameList)
@@ -64,7 +67,6 @@ class FavFragment : Fragment() {
 
         binding.swipe.setColorSchemeResources(R.color.green, R.color.blueoscuro)
         binding.swipe.setOnRefreshListener {
-
             Handler(Looper.getMainLooper()).postDelayed({
                 binding.swipe.isRefreshing = false
             }, 2000)
@@ -108,7 +110,6 @@ class FavFragment : Fragment() {
                 .create()
             alertDialog.show()
         }
-
     }
 
     private fun onItemSelected(game: Game) {

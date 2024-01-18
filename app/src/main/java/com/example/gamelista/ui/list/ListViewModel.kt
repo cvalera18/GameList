@@ -32,18 +32,6 @@ class ListViewModel : ViewModel() {
         }
     }
 
-//    fun onFavItem(game: Game) {
-//        val currentGame = GameProvider.modelGameList.first { it.titulo == game.titulo }
-//
-//        if (!game.fav) {
-//            currentGame.fav = true
-//            FavGameProvider.modelFavGameList.add(game)
-//        } else {
-//            FavGameProvider.modelFavGameList.remove(game)
-//            currentGame.fav = false
-//        }
-//        _gameList.value = GameProvider.modelGameList
-//    }
     fun onFavItem(game: Game) {
         repository.onFavItem(game)
         getListGames()
@@ -51,35 +39,8 @@ class ListViewModel : ViewModel() {
 
     fun onListedItem(game: Game, status: GameStatus) {
         _gameList.value = repository.onListedItem(game, status)
+        getListGames()
     }
-
-//    fun configFilter(userFilter: String) {
-//        val gameFiltered =
-//            MyListProvider.modelListedGameList.filter { game ->
-//                game.titulo.lowercase().contains(userFilter.lowercase())
-//            }
-//        _gameList.value = gameFiltered
-//    }
-
-//    fun configFilter(userFilter: String) {
-//        viewModelScope.launch {
-//            if (userFilter == currentSearchQuery) {
-//                // La búsqueda actual ya se realizó, no es necesario realizar otra búsqueda.
-//                return@launch
-//            }
-//
-//            if (userFilter.isNotBlank()) {
-//                // Se presionó "Enter", realizar la búsqueda.
-//                val gameFiltered = repository.searchGames(userFilter).filter { game ->
-//                    game.titulo.lowercase().contains(userFilter.lowercase())
-//                }
-//                _gameList.value = gameFiltered
-//            } else {
-//                // No se ha presionado "Enter" todavía, simplemente actualiza la cadena de búsqueda actual.
-//                currentSearchQuery = userFilter
-//            }
-//        }
-//    }
 
     private val searchQueryStateFlow = MutableStateFlow("")
 

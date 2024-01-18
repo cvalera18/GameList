@@ -25,13 +25,13 @@ class GameListViewHolder(
     ) {
 
         binding.tvGame.text = gameListModel.titulo
-        binding.tvStatus.text = gameListModel.status
+        binding.tvStatus.text = gameListModel.status.value
         binding.tvPlatform.text = gameListModel.plataforma
         Glide.with(binding.ivGame.context).load(gameListModel.imagen).into(binding.ivGame)
         itemView.setOnClickListener { onClickListener(gameListModel) }
         binding.ivCircle.setOnClickListener { showPopup(gameListModel, onAddToListListener) }
 
-        if (gameListModel.status !="Sin Clasificar"){
+        if (gameListModel.status !=GameStatus.SIN_CLASIFICAR){
             binding.ivCircle.setImageDrawable(
                 ContextCompat.getDrawable(
                     binding.ivCircle.context,

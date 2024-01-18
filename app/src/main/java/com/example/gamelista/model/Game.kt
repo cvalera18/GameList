@@ -5,18 +5,18 @@ data class Game(
     val titulo: String,
     val imagen: String,
     val plataforma: String,
-    var status: String,
-    var fav: Boolean,
+    var status: GameStatus,
+    val fav: Boolean,
     var sinopsis: String,
     var dev: String
 ) {
     // Getter para status
-    fun getStatusGame(): String {
+    fun getStatusGame(): GameStatus {
         return status
     }
 
     // Setter para status
-    fun setStatusGame(newStatus: String) {
+    fun setStatusGame(newStatus: GameStatus) {
         status = newStatus
     }
 }

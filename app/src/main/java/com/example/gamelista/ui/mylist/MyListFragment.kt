@@ -29,7 +29,6 @@ class MyListFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
     }
 
     override fun onCreateView(
@@ -45,11 +44,18 @@ class MyListFragment : Fragment() {
         configFilter()
         initRecyclerView()
         configSwipe()
-        observeGameList()
+        observeMyGameList()
         viewModel.getListGames()
     }
 
-    private fun observeGameList() {
+
+    override fun onResume() {
+    super.onResume()
+    viewModel.getListGames()
+    }
+
+
+    private fun observeMyGameList() {
         viewModel.listedGameList.observe(viewLifecycleOwner) { listedGameList ->
             adapter.updateGames(listedGameList)
         }
@@ -59,7 +65,6 @@ class MyListFragment : Fragment() {
 
         binding.swipe.setColorSchemeResources(R.color.green, R.color.blueoscuro)
         binding.swipe.setOnRefreshListener {
-
             Handler(Looper.getMainLooper()).postDelayed({
                 binding.swipe.isRefreshing = false
             }, 2000)
@@ -73,13 +78,13 @@ class MyListFragment : Fragment() {
     }
 
     private fun initRecyclerView() {
+        val llmanager = LinearLayoutManager(requireContext())
         adapter = GameListAdapter(
             gameList = emptyList(),
             onClickListener = { onItemSelected(it) },
             onClickStarListener = { onFavItem(it) }
         ) { game, status -> onListedItem(game, status) }
 
-        val llmanager = LinearLayoutManager(requireContext())
         val decoration =
             DividerItemDecoration(binding.recyclerGameList.context, llmanager.orientation)
         binding.recyclerGameList.layoutManager = llmanager

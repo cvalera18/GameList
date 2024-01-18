@@ -44,6 +44,11 @@ class ListFragment : Fragment() {
         viewModel.getListGames()
     }
 
+    override fun onResume() {
+        super.onResume()
+        viewModel.getListGames()
+    }
+
     private fun observeGameList() {
         viewModel.gameList.observe(viewLifecycleOwner) { gameList ->
             adapter.updateGames(gameList)
@@ -67,20 +72,6 @@ class ListFragment : Fragment() {
         }
     }
 
-//    private fun configFilter() {
-//        binding.etFilter.setOnEditorActionListener { textView, actionId, keyEvent ->
-//            if (actionId == EditorInfo.IME_ACTION_DONE) {
-//                // La tecla Done fue presionada
-//                val userFilter = textView.text.toString()
-//                viewModel.configFilter(userFilter)
-//                true // Indica que el evento fue manejado
-//            } else {
-//                false // Indica que el evento no fue manejado
-//            }
-//        }
-//    }
-
-
     private fun initRecyclerView() {
         adapter = GameListAdapter(
             gameList = emptyList(),
@@ -94,7 +85,6 @@ class ListFragment : Fragment() {
         binding.recyclerGameList.layoutManager = llmanager
         binding.recyclerGameList.adapter = adapter
         binding.recyclerGameList.addItemDecoration(decoration)
-
     }
 
     private fun onFavItem(game: Game) {

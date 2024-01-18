@@ -5,7 +5,7 @@ class MyListProvider {
         val modelListedGameList: MutableList<Game> = mutableListOf()
 
         fun addOrUpdateGame(game: Game, status: GameStatus) {
-            game.setStatusGame(status.value)
+            game.setStatusGame(status)
 
             val currentGame = modelListedGameList
                 .firstOrNull { gameInList -> gameInList.titulo == game.titulo }
@@ -20,7 +20,7 @@ class MyListProvider {
         }
 
         fun deleteGame(game: Game, status: GameStatus){
-                game.setStatusGame(status.value)
+                game.setStatusGame(status)
                 modelListedGameList.remove(game)
         }
     }
