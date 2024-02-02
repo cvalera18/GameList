@@ -1,15 +1,13 @@
 package com.example.gamelista.ui.list
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.gamelista.data.Repository
 import com.example.gamelista.model.Game
-import com.example.gamelista.model.GameProvider
 import com.example.gamelista.model.GameStatus
-import com.example.gamelista.model.FavGameProvider
-import com.example.gamelista.model.MyListProvider
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.debounce
@@ -17,7 +15,6 @@ import kotlinx.coroutines.launch
 
 
 class ListViewModel : ViewModel() {
-
     private val repository = Repository
     private var currentSearchQuery = ""
     private val _gameList = MutableLiveData<List<Game>>(emptyList())
@@ -25,9 +22,10 @@ class ListViewModel : ViewModel() {
 
     fun getListGames() {
         //_gameList.value = GameProvider.modelGameList
-
         viewModelScope.launch {
             _gameList.value = repository.getGames()
+//            val games = repository.getGames()
+//            _gameList.value = _gameList.value?.plus(games) ?: games
             //_gameList.value = repository.searchGames("sonic")
         }
     }
@@ -64,6 +62,9 @@ class ListViewModel : ViewModel() {
                 }
         }
         getListGames()
+    }
+    fun pasarPagina() {
+        repository.pasarPagina()
     }
 
 }

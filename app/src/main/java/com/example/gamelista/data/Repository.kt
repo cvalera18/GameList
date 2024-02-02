@@ -14,18 +14,24 @@ object Repository {
     private var lastQuery: String = ""
     private val modelListedGameList: MutableList<Game> = mutableListOf()
     private val gamesList: MutableList<Game> = mutableListOf()
+    var currentPage = 1
+    private var shouldRequestNewPage: Boolean = true
 
     suspend fun getGames(): List<Game> = withContext(Dispatchers.IO) {
-        if (cache.isNotEmpty()) return@withContext mergeWithLocalList(cache)
+        if (cache.isNotEmpty() && !shouldRequestNewPage) {
+            return@withContext mergeWithLocalList(cache)
+        }
         try {
-            val response = service.listApiGames()
+            val response = service.listApiGames(currentPage)
             val apiGames = response.results
 
             createGamesFromApi(apiGames).also {
-                cache = mergeWithLocalList(it)
+                cache = cache + mergeWithLocalList(it)
             }
+            shouldRequestNewPage = false
             return@withContext cache
         } catch (e: Exception) {
+            shouldRequestNewPage = false
             return@withContext listOf()
         }
     }
@@ -146,6 +152,11 @@ object Repository {
     private fun deleteGame(game: Game, status: GameStatus){
         game.setStatusGame(status)
         modelListedGameList.remove(game)
+    }
+
+    fun pasarPagina(){
+        currentPage++
+        shouldRequestNewPage = true
     }
 
     private fun createGamesFromApi(apiGames: List<com.example.gamelista.data.model.Game>): List<Game> {

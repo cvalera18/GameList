@@ -3,6 +3,7 @@ package com.example.gamelista.ui.list
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -14,6 +15,7 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.example.gamelista.model.GameStatus
 import com.example.gamelista.R
 import com.example.gamelista.adapter.GameListAdapter
@@ -25,6 +27,8 @@ class ListFragment : Fragment() {
     private val binding get() = _binding!!
     private lateinit var adapter: GameListAdapter
     private val viewModel: ListViewModel by viewModels()
+    private var currentPage: Int = 1
+    private var isLoading = false
 
 
     override fun onCreateView(
@@ -44,14 +48,15 @@ class ListFragment : Fragment() {
         viewModel.getListGames()
     }
 
-    override fun onResume() {
-        super.onResume()
-        viewModel.getListGames()
-    }
+//    override fun onResume() {
+//        super.onResume()
+//        viewModel.getListGames()
+//    }
 
     private fun observeGameList() {
         viewModel.gameList.observe(viewLifecycleOwner) { gameList ->
             adapter.updateGames(gameList)
+            isLoading = false
         }
     }
 
@@ -85,6 +90,24 @@ class ListFragment : Fragment() {
         binding.recyclerGameList.layoutManager = llmanager
         binding.recyclerGameList.adapter = adapter
         binding.recyclerGameList.addItemDecoration(decoration)
+
+//         Agregar ScrollListener para cargar más juegos al llegar al final de la lista
+        binding.recyclerGameList.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                val visibleItemCount: Int = llmanager.childCount
+                val pastVisibleItem: Int = llmanager.findLastCompletelyVisibleItemPosition()
+                val total = adapter.itemCount
+                if (visibleItemCount + pastVisibleItem >= total) {
+                    // Solo cargar más juegos si no hay una carga en progreso
+                    if (!isLoading) {
+                        isLoading = true
+                        viewModel.pasarPagina()
+                        viewModel.getListGames()
+                    }
+                }
+                super.onScrolled(recyclerView, dx, dy)
+            }
+        })
     }
 
     private fun onFavItem(game: Game) {

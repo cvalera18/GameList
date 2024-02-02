@@ -29,9 +29,6 @@ class MainActivity : AppCompatActivity() {
         val navHostFragment = supportFragmentManager.findFragmentById(R.id.frameContainer) as NavHostFragment
         bottomNavigationView.setupWithNavController(navHostFragment.navController)
 
-//        gameViewModel.gameList.observe(this, Observer {
-//            //Aquí se va a ejecutar lo que yo quiera cuando haya un cambio en LiveData
-//        })
 
     }
 }
