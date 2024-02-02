@@ -50,7 +50,7 @@ class ListViewModel : ViewModel() {
             searchQueryStateFlow.value = userFilter
 
             // Utiliza el flujo con debounce para esperar un tiempo antes de realizar la búsqueda
-            searchQueryStateFlow.debounce(500) // Ajusta el tiempo de debounce según tus necesidades (300 ms en este ejemplo)
+            searchQueryStateFlow.debounce(500) // Ajusta el tiempo de debounce según tus necesidades (500 ms en este ejemplo)
                 .collectLatest { debouncedUserFilter ->
                     // Dentro de este bloque se realizará la búsqueda después de esperar el tiempo especificado
                     if (debouncedUserFilter.isNotBlank()) {
@@ -63,6 +63,7 @@ class ListViewModel : ViewModel() {
                     }
                 }
         }
+        getListGames()
     }
 
 }

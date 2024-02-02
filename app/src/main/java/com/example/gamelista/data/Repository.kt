@@ -50,12 +50,13 @@ object Repository {
             val apiGames = response.results
 
             createGamesFromApi(apiGames).also {
-                cache = it
+                cache = mergeWithLocalList(it)
                 lastQuery = query
             }
         } catch (e: Exception) {
             return@withContext listOf()
         }
+        getGames()
     }
     fun onListedItem(game: Game, status: GameStatus): List<Game> {
         if (status != GameStatus.SIN_CLASIFICAR) {
