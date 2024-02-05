@@ -3,4 +3,8 @@
     <string name="text_click">CLICK</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="buscar">Buscar</string>
+    <string name="tlou1sinopsis">Conoce la emocionante historia y a los entrañables personajes de The Last of Us, ganador de más de 200 premios del Juego del año.
+            En una civilización devastada, donde los infectados y los empedernidos sobrevivientes proliferan, Joel, un protagonista cansado, es contratado para rescatar de contrabando
+            a una niña de 14 años llamada Ellie de una zona de cuarentena militar. Sin embargo, lo que comienza como un pequeño trabajo pronto se transforma en una brutal travesía por todo el país.</string>
 </resources>

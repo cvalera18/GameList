@@ -5,5 +5,8 @@
     <color name="purple">#7E5BBD</color>
     <color name="green">#8BC34A</color>
     <color name="grey">#C8C8C8</color>
+    <color name="grey2">#818181</color>
     <color name="blueoscuro">#0C2353</color>
+    <color name="rojillo">#EA2424</color>
+    <color name="fucsia">#CD0AE3</color>
 </resources>
