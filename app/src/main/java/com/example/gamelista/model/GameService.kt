@@ -15,7 +15,8 @@ interface GameService {
 
     @GET("https://api.rawg.io/api/games?key=567b75b59cd4487780179c4fc37ab73b&page_size=20")
     suspend fun searchGames(
-        @Query("search") query: String
+        @Query("search") query: String,
+        @Query("page") page: Int
     ): GameResponse
 }
 

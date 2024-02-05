@@ -20,7 +20,6 @@ import com.example.gamelista.adapter.GameListAdapter
 import com.example.gamelista.databinding.FragmentFavBinding
 import com.example.gamelista.model.Game
 import com.example.gamelista.model.FavGameProvider
-import com.google.android.material.navigation.NavigationView
 
 class FavFragment : Fragment() {
 
@@ -45,7 +44,7 @@ class FavFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        configFilter()
+        searchInList()
         initRecyclerView()
         configSwipe()
         observeFavGameList()
@@ -73,9 +72,9 @@ class FavFragment : Fragment() {
         }
     }
 
-    private fun configFilter() {
+    private fun searchInList() {
         binding.etFilter.addTextChangedListener { userFilter ->
-            viewModel.configFilter(userFilter.toString())
+            viewModel.searchInList(userFilter.toString())
         }
     }
 

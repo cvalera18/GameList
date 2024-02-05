@@ -3,11 +3,11 @@ package com.example.gamelista.ui.favorites
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.example.gamelista.data.Repository
 import com.example.gamelista.model.Game
-import com.example.gamelista.model.FavGameProvider
 import com.example.gamelista.model.GameStatus
-import com.example.gamelista.model.MyListProvider
+import kotlinx.coroutines.launch
 
 class FavViewModel: ViewModel() {
 
@@ -21,24 +21,14 @@ class FavViewModel: ViewModel() {
         _favGameList.value = games
     }
 
-    fun configFilter(userFilter: String) {
-        val gameFiltered =
-            FavGameProvider.modelFavGameList.filter { game ->
-                game.titulo.lowercase().contains(userFilter.lowercase())
-            }
-        _favGameList.value = gameFiltered
+    fun searchInList(userFilter: String) {
+        viewModelScope.launch {
+            val filteredGames = repository.filterFavoriteGames(userFilter)
+            _favGameList.value = filteredGames
+        }
     }
 
     fun onFavItem(game: Game) {
-        /*
-        val currentGame = FavGameProvider.modelFavGameList.first { it.titulo == game.titulo }
-
-        // FIXME
-        //            currentGame.fav = true
-        FavGameProvider.modelFavGameList.add(game)
-
-        _favGameList.value = FavGameProvider.modelFavGameList
-        */
         repository.onFavItem(game)
         getListGames()
     }
@@ -49,14 +39,6 @@ class FavViewModel: ViewModel() {
     }
 
     fun onListedItem(game: Game, status: GameStatus) {
-        /*
-        if (status != GameStatus.SIN_CLASIFICAR) {
-        MyListProvider.addOrUpdateGame(game, status)
-        } else {
-        MyListProvider.deleteGame(game, status)
-        }
-        _favGameList.value = FavGameProvider.modelFavGameList
-        */
         _favGameList.value = repository.onListedItem(game, status)
         getListGames()
     }

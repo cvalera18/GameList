@@ -5,7 +5,7 @@ import com.google.gson.annotations.SerializedName
 data class Game(
     val added: Int,
     val added_by_status: AddedByStatus,
-    @SerializedName("background_image") val backgroundImage: String,
+    @SerializedName("background_image") val backgroundImage: String?,
     val clip: Any,
     val dominant_color: String,
     val esrb_rating: Any,
@@ -14,7 +14,7 @@ data class Game(
     val metacritic: Int?,
     val name: String,
     val parent_platforms: List<ParentPlatform>,
-    val platforms: List<PlatformX>,
+    val platforms: List<PlatformX>?,
     val playtime: Int,
     val rating: Double,
     val rating_top: Int,
@@ -85,7 +85,7 @@ data class Tag(
 
 data class Platform(
     val id: Int,
-    val name: String,
+    val name: String?,
     val slug: String
 )
 
