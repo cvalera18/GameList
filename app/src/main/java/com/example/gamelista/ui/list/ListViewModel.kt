@@ -66,24 +66,8 @@ class ListViewModel : ViewModel() {
 
 
     fun configFilter(userFilter: String) {
-//        viewModelScope.launch {
-            // Actualiza el valor del estado del flujo cada vez que el usuario escribe algo
             searchQueryStateFlow.value = userFilter
 
-            // Utiliza el flujo con debounce para esperar un tiempo antes de realizar la búsqueda
-//            searchQueryStateFlow.debounce(500) // Ajusta el tiempo de debounce según tus necesidades (500 ms en este ejemplo)
-//                .collectLatest { debouncedUserFilter ->
-//                    // Dentro de este bloque se realizará la búsqueda después de esperar el tiempo especificado
-//                    if (debouncedUserFilter.isNotBlank()) {
-//                        val gameFiltered = repository.searchGames(debouncedUserFilter).filter { game ->
-//                            game.titulo.lowercase().contains(debouncedUserFilter.lowercase())
-//                        }
-//                        _gameList.value = gameFiltered
-//                    } else {
-//                        // No se ha ingresado nada, puedes manejar esto según tus necesidades
-//                    }
-//                }
-//        }
     }
 
     fun pasarPagina() {
