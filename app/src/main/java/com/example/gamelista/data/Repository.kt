@@ -50,7 +50,9 @@ object Repository {
     }
 
     suspend fun searchGames(query: String): List<Game> = withContext(Dispatchers.IO) {
-        if (query == lastQuery && cache.isNotEmpty() && !shouldRequestNewPage) return@withContext cache
+        if (query == lastQuery && cache.isNotEmpty() && !shouldRequestNewPage) {
+            return@withContext mergeWithLocalList(cache)
+        }
         try {
             val response = service.searchGames(query, currentPage)
             val apiGames = response.results
