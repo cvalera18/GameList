@@ -2,7 +2,7 @@ package com.example.gamelista.data.model
 
 import com.google.gson.annotations.SerializedName
 
-data class Game(
+data class NetworkGame(
     val added: Int,
     val added_by_status: AddedByStatus,
     @SerializedName("background_image") val backgroundImage: String?,

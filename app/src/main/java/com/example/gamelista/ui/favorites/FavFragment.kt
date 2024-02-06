@@ -1,6 +1,7 @@
 package com.example.gamelista.ui.favorites
 
 import android.app.AlertDialog
+import android.content.Context
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
@@ -17,6 +18,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.gamelista.model.GameStatus
 import com.example.gamelista.R
 import com.example.gamelista.adapter.GameListAdapter
+import com.example.gamelista.data.Repository
 import com.example.gamelista.databinding.FragmentFavBinding
 import com.example.gamelista.model.Game
 import com.example.gamelista.model.FavGameProvider
@@ -32,6 +34,10 @@ class FavFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+    }
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        Repository.initialize(context.applicationContext)
     }
 
     override fun onCreateView(

@@ -1,5 +1,6 @@
 package com.example.gamelista.ui.list
 
+import android.content.Context
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
@@ -19,6 +20,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.gamelista.model.GameStatus
 import com.example.gamelista.R
 import com.example.gamelista.adapter.GameListAdapter
+import com.example.gamelista.data.Repository
 import com.example.gamelista.databinding.FragmentListBinding
 import com.example.gamelista.model.Game
 
@@ -30,6 +32,10 @@ class ListFragment : Fragment() {
     private var currentPage: Int = 1
     private var isLoading = false
 
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        Repository.initialize(context.applicationContext)
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
