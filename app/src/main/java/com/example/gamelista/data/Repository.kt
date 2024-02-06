@@ -1,5 +1,6 @@
 package com.example.gamelista.data
 
+import android.content.Context
 import com.example.gamelista.model.Game
 import com.example.gamelista.model.GameStatus
 import com.example.gamelista.model.RetrofitServiceFactory
@@ -13,10 +14,14 @@ object Repository {
     private var cache: List<Game> = listOf()
     private var lastQuery: String = ""
     private var modelListedGameList: MutableList<Game> = mutableListOf()
-    private val gamesList: MutableList<Game> = mutableListOf()
+    private var gamesList: MutableList<Game> = mutableListOf() //La cambié de val a var, no sé si técnicamente está mal
     var currentPage = 1
     private var shouldRequestNewPage: Boolean = true
+    private lateinit var sharedPreferencesManager: GameSharedPreferencesManager
 
+    fun initialize(context: Context) {
+        sharedPreferencesManager = GameSharedPreferencesManager(context)
+    }
     suspend fun getGames(): List<Game> = withContext(Dispatchers.IO) {
         if (cache.isNotEmpty() && !shouldRequestNewPage) {
             return@withContext mergeWithLocalList(cache)
@@ -90,11 +95,17 @@ object Repository {
     }
 
     fun getFavoriteGames(): List<Game> {
+        val savedGameList = sharedPreferencesManager.getGameList()
+        // Actualiza la lista de juegos con los datos guardados
+        gamesList = mergeWithLocalList(savedGameList).toMutableList()
         modelListedGameList = gamesList
         return modelListedGameList // puedes devolver gameList también, pero modelListedGameList es la que solo tiene favs y con estado definido
             .filter {
                 it.fav //it.fav == true
             }
+    }
+    fun mergeWithGameList(){
+
     }
 
     fun filterFavoriteGames(userFilter: String): List<Game> {
@@ -148,6 +159,7 @@ object Repository {
         } else {
             gamesList.add(newGame.copy(fav = true))
         }
+        saveGamesListToSharedPreferences(gamesList)
         modelListedGameList = gamesList
     }
     private fun removeItemFromFavorites(newGame: Game) {
@@ -157,6 +169,7 @@ object Repository {
             gamesList.remove(actual)
             gamesList.add(newGame.copy(fav = false))
         }
+        saveGamesListToSharedPreferences(gamesList)
         modelListedGameList = gamesList
     }
 
@@ -176,13 +189,15 @@ object Repository {
         game.setStatusGame(status)
         modelListedGameList = gamesList
     }
-
+    private fun saveGamesListToSharedPreferences(gameList: List<Game>) {
+        sharedPreferencesManager.saveGameList(gameList)
+    }
     fun pasarPagina(){
         currentPage++
         shouldRequestNewPage = true
     }
 
-    private fun createGamesFromApi(apiGames: List<com.example.gamelista.data.model.Game>): List<Game> {
+    private fun createGamesFromApi(apiGames: List<com.example.gamelista.data.model.NetworkGame>): List<Game> {
         return apiGames
             .filter {
                 it.id != 0 && it.name.isNotEmpty() && !it.platforms.isNullOrEmpty()
@@ -202,5 +217,6 @@ object Repository {
             )
         }
     }
+
 
 }
