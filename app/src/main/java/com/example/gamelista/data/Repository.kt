@@ -16,6 +16,7 @@ object Repository {
     private var modelListedGameList: MutableList<Game> = mutableListOf()
     private var gamesList: MutableList<Game> = mutableListOf() //La cambié de val a var, no sé si técnicamente está mal
     var currentPage = 1
+    var searchPage = 1
     private var shouldRequestNewPage: Boolean = true
     private lateinit var sharedPreferencesManager: GameSharedPreferencesManager
 
@@ -58,8 +59,11 @@ object Repository {
         if (query == lastQuery && cache.isNotEmpty() && !shouldRequestNewPage) {
             return@withContext mergeWithLocalList(cache)
         }
+        if (query != lastQuery) {
+            searchPage = 1
+        }
         try {
-            val response = service.searchGames(query, currentPage)
+            val response = service.searchGames(query, searchPage++)
             val apiGames = response.results
 
             createGamesFromApi(apiGames).also {
@@ -104,9 +108,6 @@ object Repository {
                 it.fav //it.fav == true
             }
     }
-    fun mergeWithGameList(){
-
-    }
 
     fun filterFavoriteGames(userFilter: String): List<Game> {
         val filteredGames = gamesList
@@ -117,6 +118,9 @@ object Repository {
     }
 
     fun getListedGames(excludedStatus: GameStatus): List<Game> {
+        val listedGameList = sharedPreferencesManager.getGameList()
+        // Actualiza la lista de juegos con los datos guardados
+        gamesList = mergeWithLocalList(listedGameList).toMutableList()
         modelListedGameList = gamesList
 //        return gamesList
         return modelListedGameList
@@ -139,6 +143,7 @@ object Repository {
         if (currentGame == null) {
             addGameToList(game)
         }
+        saveGamesListToSharedPreferences(gamesList)
         modelListedGameList = gamesList
     }
 
@@ -187,6 +192,7 @@ object Repository {
 
     private fun deleteGame(game: Game, status: GameStatus){
         game.setStatusGame(status)
+        saveGamesListToSharedPreferences(gamesList)
         modelListedGameList = gamesList
     }
     private fun saveGamesListToSharedPreferences(gameList: List<Game>) {
