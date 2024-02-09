@@ -1,45 +1,99 @@
 package com.example.gamelista.data
-
 import android.content.Context
+import com.api.igdb.apicalypse.APICalypse
+import com.api.igdb.apicalypse.Sort
+import com.api.igdb.exceptions.RequestException
+import com.api.igdb.request.IGDBWrapper
+import com.api.igdb.request.games
+import com.api.igdb.utils.ImageSize
+import com.api.igdb.utils.ImageType
+import com.api.igdb.utils.imageBuilder
 import com.example.gamelista.model.Game
 import com.example.gamelista.model.GameStatus
-import com.example.gamelista.model.RetrofitServiceFactory
+//import com.example.gamelista.model.RetrofitServiceFactory
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
+import proto.Screenshot
 
 object Repository {
 
-    private val service = RetrofitServiceFactory.makeRetrofitService()
+//    private val service = RetrofitServiceFactory.makeRetrofitService()
 
     private var cache: List<Game> = listOf()
     private var lastQuery: String = ""
     private var modelListedGameList: MutableList<Game> = mutableListOf()
-    private var gamesList: MutableList<Game> = mutableListOf() //La cambié de val a var, no sé si técnicamente está mal
+    private var gamesList: MutableList<Game> =
+        mutableListOf() //La cambié de val a var, no sé si técnicamente está mal
     var currentPage = 1
     var searchPage = 1
+    private const val LIMIT = 20
     private var shouldRequestNewPage: Boolean = true
     private lateinit var sharedPreferencesManager: GameSharedPreferencesManager
+    private const val BASE_URL = "https://api.igdb.com/v4/"
+    private const val CLIENT_ID = "9ka22ciij2034pew1ovudpz2esookx"
+    private const val AUTHORIZATION_TOKEN = "6tncw4nq67y7oc4ep2qgkpe3q83j5g"
 
     fun initialize(context: Context) {
         sharedPreferencesManager = GameSharedPreferencesManager(context)
     }
+
+    //    suspend fun getGames(): List<Game> = withContext(Dispatchers.IO) {
+//        if (cache.isNotEmpty() && !shouldRequestNewPage) {
+//            return@withContext mergeWithLocalList(cache)
+//        }
+//        try {
+//            val response = service.listApiGames(currentPage)
+//            val apiGames = response.results
+//
+//            createGamesFromApi(apiGames).also {
+//                cache = cache + mergeWithLocalList(it)
+//            }
+//            shouldRequestNewPage = false
+//            return@withContext cache
+//        } catch (e: Exception) {
+//            shouldRequestNewPage = false
+//            return@withContext listOf()
+//        }
+//    }
     suspend fun getGames(): List<Game> = withContext(Dispatchers.IO) {
         if (cache.isNotEmpty() && !shouldRequestNewPage) {
             return@withContext mergeWithLocalList(cache)
-        }
-        try {
-            val response = service.listApiGames(currentPage)
-            val apiGames = response.results
-
-            createGamesFromApi(apiGames).also {
+            }
+        IGDBWrapper.setCredentials(CLIENT_ID, AUTHORIZATION_TOKEN)
+        val apicalypse = APICalypse().fields("*, cover.*").limit(20).sort("rating", Sort.DESCENDING)
+        try{
+            val wrapperGames: List<proto.Game> = IGDBWrapper.games(apicalypse)
+            createGamesFromWrapper(wrapperGames).also {
                 cache = cache + mergeWithLocalList(it)
             }
             shouldRequestNewPage = false
             return@withContext cache
-        } catch (e: Exception) {
+        } catch(e: RequestException) {
             shouldRequestNewPage = false
             return@withContext listOf()
         }
+
+    }
+
+    private fun createGamesFromWrapper(apiGames: List<proto.Game>) : List<Game> {
+        return apiGames
+            .filter {
+                it.id.toInt() != 0 && it.name.isNotEmpty() && !it.platformsList.isNullOrEmpty()
+            }
+            .map { game ->
+                Game(
+                    id = game.id,
+                    titulo = game.name,
+                    imagen = imageBuilder(game.cover.imageId),
+                    plataforma = game.platformsList?.filter { platform ->
+                        platform.name.isNotEmpty()
+                    }?.joinToString(separator = ", ") {it.name!! }.orEmpty(),
+                    status = GameStatus.SIN_CLASIFICAR,
+                    fav = false,
+                    sinopsis = "",
+                    dev = ""
+                )
+            }
     }
 
     private fun mergeWithLocalList(remoteGames: List<Game>): List<Game> {
@@ -62,14 +116,17 @@ object Repository {
         if (query != lastQuery) {
             searchPage = 1
         }
+        IGDBWrapper.setCredentials(CLIENT_ID, AUTHORIZATION_TOKEN)
+        val apicalypse = APICalypse()
+            .fields("*, cover.*")
+            .search(query)
+            .limit(20)
         try {
-            val response = service.searchGames(query, searchPage++)
-            val apiGames = response.results
-
-            createGamesFromApi(apiGames).also {
+            val wrapperGames: List<proto.Game> = IGDBWrapper.games(apicalypse)
+            createGamesFromWrapper(wrapperGames).also {
                 cache = (cache + mergeWithLocalList(it)).filter { game ->
                     game.titulo.lowercase().contains(query.lowercase())
-                    }
+                }
                 lastQuery = query
                 shouldRequestNewPage = false
             }
@@ -79,8 +136,11 @@ object Repository {
             shouldRequestNewPage = false
             return@withContext listOf()
         }
-//        getGames()
     }
+    fun imageBuilder(imageID: String): String {
+        return imageBuilder(imageID, ImageSize.COVER_BIG, ImageType.PNG)
+    }
+
     fun onListedItem(game: Game, status: GameStatus): List<Game> {
         if (status != GameStatus.SIN_CLASIFICAR) {
             addOrUpdateGame(game, status)
@@ -150,8 +210,7 @@ object Repository {
     fun onFavItem(game: Game) {
         if (!game.fav) {
             addItemToFavorites(game)
-        }
-        else {
+        } else {
             removeItemFromFavorites(game)
         }
     }
@@ -167,6 +226,7 @@ object Repository {
         saveGamesListToSharedPreferences(gamesList)
         modelListedGameList = gamesList
     }
+
     private fun removeItemFromFavorites(newGame: Game) {
         val actual = gamesList.firstOrNull { it.id == newGame.id }
 //        val actual = modelListedGameList.firstOrNull { it.id == newGame.id }
@@ -190,39 +250,41 @@ object Repository {
         modelListedGameList = gamesList
     }
 
-    private fun deleteGame(game: Game, status: GameStatus){
+    private fun deleteGame(game: Game, status: GameStatus) {
         game.setStatusGame(status)
         saveGamesListToSharedPreferences(gamesList)
         modelListedGameList = gamesList
     }
+
     private fun saveGamesListToSharedPreferences(gameList: List<Game>) {
         sharedPreferencesManager.saveGameList(gameList)
     }
-    fun pasarPagina(){
+
+    fun pasarPagina() {
         currentPage++
         shouldRequestNewPage = true
     }
 
-    private fun createGamesFromApi(apiGames: List<com.example.gamelista.data.model.NetworkGame>): List<Game> {
-        return apiGames
-            .filter {
-                it.id != 0 && it.name.isNotEmpty() && !it.platforms.isNullOrEmpty()
-            }
-            .map { game ->
-            Game(
-                id = game.id,
-                titulo = game.name,
-                imagen = game.backgroundImage,
-                plataforma = game.platforms?.filter {
-                        platform -> !platform.platform.name.isNullOrEmpty()
-                }?.joinToString(separator = ", ") { it.platform.name!! }.orEmpty(),
-                status = GameStatus.SIN_CLASIFICAR,
-                fav = false,
-                sinopsis = "",
-                dev = ""
-            )
-        }
-    }
+//    private fun createGamesFromApi(apiGames: List<com.example.gamelista.data.model.NetworkGame>): List<Game> {
+//        return apiGames
+//            .filter {
+//                it.id != 0 && it.name.isNotEmpty() && !it.platforms.isNullOrEmpty()
+//            }
+//            .map { game ->
+//                Game(
+//                    id = game.id.toLong(),
+//                    titulo = game.name,
+//                    imagen = game.backgroundImage,
+//                    plataforma = game.platforms?.filter { platform ->
+//                        !platform.platform.name.isNullOrEmpty()
+//                    }?.joinToString(separator = ", ") { it.platform.name!! }.orEmpty(),
+//                    status = GameStatus.SIN_CLASIFICAR,
+//                    fav = false,
+//                    sinopsis = "",
+//                    dev = ""
+//                )
+//            }
+//    }
 
 
 }
