@@ -11,6 +11,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
 import androidx.core.os.bundleOf
+import androidx.core.os.postDelayed
 import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
@@ -29,7 +30,6 @@ class ListFragment : Fragment() {
     private val binding get() = _binding!!
     private lateinit var adapter: GameListAdapter
     private val viewModel: ListViewModel by viewModels()
-    private var currentPage: Int = 1
     private var isLoading = false
 
     override fun onAttach(context: Context) {
@@ -56,13 +56,12 @@ class ListFragment : Fragment() {
 
 //    override fun onResume() {
 //        super.onResume()
-//        viewModel.getListGames()
+//        isLoading = false
 //    }
 
     private fun observeGameList() {
         viewModel.gameList.observe(viewLifecycleOwner) { gameList ->
-            adapter.updateGames(gameList)
-            isLoading = false
+                adapter.updateGames(gameList)
         }
     }
 
@@ -70,10 +69,15 @@ class ListFragment : Fragment() {
 
         binding.swipe.setColorSchemeResources(R.color.grey, R.color.blueoscuro)
         binding.swipe.setOnRefreshListener {
-
-            Handler(Looper.getMainLooper()).postDelayed({
-                binding.swipe.isRefreshing = false
-            }, 2000)
+            if (!isLoading) {
+                isLoading = true
+                binding.swipe.isRefreshing = true
+                viewModel.getListGames()
+                Handler(Looper.getMainLooper()).postDelayed({
+                    binding.swipe.isRefreshing = false
+                    isLoading = false
+                }, 2000)
+            }
         }
     }
 
@@ -107,8 +111,13 @@ class ListFragment : Fragment() {
                     // Solo cargar más juegos si no hay una carga en progreso
                     if (!isLoading) {
                         isLoading = true
+                        binding.swipe.isRefreshing = true
                         viewModel.pasarPagina()
                         viewModel.getListGames()
+                        Handler(Looper.getMainLooper()).postDelayed({
+                            binding.swipe.isRefreshing = false
+                            isLoading = false
+                        }, 1500)
                     }
                 }
                 super.onScrolled(recyclerView, dx, dy)

@@ -4,6 +4,9 @@ import android.view.View
 import androidx.appcompat.widget.PopupMenu
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
+import com.api.igdb.utils.ImageSize
+import com.api.igdb.utils.ImageType
+import com.api.igdb.utils.imageBuilder
 import com.bumptech.glide.Glide
 import com.example.gamelista.model.Game
 import com.example.gamelista.model.GameStatus

@@ -26,7 +26,7 @@ class MyListFragment : Fragment() {
     private val binding get() = _binding!!
     private lateinit var adapter: GameListAdapter
     private val viewModel: MyListViewModel by viewModels()
-
+    private var isLoading = false
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
     }
@@ -63,11 +63,17 @@ class MyListFragment : Fragment() {
 
     private fun configSwipe() {
 
-        binding.swipe.setColorSchemeResources(R.color.green, R.color.blueoscuro)
+        binding.swipe.setColorSchemeResources(R.color.grey, R.color.blueoscuro)
         binding.swipe.setOnRefreshListener {
-            Handler(Looper.getMainLooper()).postDelayed({
-                binding.swipe.isRefreshing = false
-            }, 2000)
+            if (!isLoading) {
+                isLoading = true
+                binding.swipe.isRefreshing = true
+                viewModel.getListGames()
+                Handler(Looper.getMainLooper()).postDelayed({
+                    binding.swipe.isRefreshing = false
+                    isLoading = false
+                }, 2000)
+            }
         }
     }
 
