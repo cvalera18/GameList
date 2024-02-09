@@ -1,9 +1,9 @@
 package com.example.gamelista.model
 
 data class Game(
-    val id: Int,
+    val id: Long,
     val titulo: String,
-    val imagen: String?,
+    val imagen: String,
     val plataforma: String,
     var status: GameStatus,
     val fav: Boolean,

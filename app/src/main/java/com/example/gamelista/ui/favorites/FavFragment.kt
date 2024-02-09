@@ -29,6 +29,7 @@ class FavFragment : Fragment() {
     private val binding get() = _binding!!
     private var myGameMutableList: MutableList<Game> = FavGameProvider.modelFavGameList.toMutableList()
     private lateinit var adapter: GameListAdapter
+    private var isLoading = false
 
     private val viewModel: FavViewModel by viewModels()
 
@@ -70,11 +71,21 @@ class FavFragment : Fragment() {
 
     private fun configSwipe() {
 
-        binding.swipe.setColorSchemeResources(R.color.green, R.color.blueoscuro)
+        binding.swipe.setColorSchemeResources(R.color.grey, R.color.blueoscuro)
         binding.swipe.setOnRefreshListener {
-            Handler(Looper.getMainLooper()).postDelayed({
-                binding.swipe.isRefreshing = false
-            }, 2000)
+            if (!isLoading) {
+                isLoading = true
+                binding.swipe.isRefreshing = true
+                viewModel.getListGames()
+                Handler(Looper.getMainLooper()).postDelayed({
+                    binding.swipe.isRefreshing = false
+                    isLoading = false
+                }, 2000)
+            }
+
+//            Handler(Looper.getMainLooper()).postDelayed({
+//                binding.swipe.isRefreshing = false
+//            }, 2000)
         }
     }
 
