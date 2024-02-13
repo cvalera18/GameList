@@ -5,6 +5,7 @@ import com.api.igdb.apicalypse.Sort
 import com.api.igdb.exceptions.RequestException
 import com.api.igdb.request.IGDBWrapper
 import com.api.igdb.request.games
+import com.api.igdb.request.search
 import com.api.igdb.utils.ImageSize
 import com.api.igdb.utils.ImageType
 import com.api.igdb.utils.imageBuilder
@@ -13,7 +14,7 @@ import com.example.gamelista.model.GameStatus
 //import com.example.gamelista.model.RetrofitServiceFactory
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
-import proto.Screenshot
+import proto.Search
 
 object Repository {
 
@@ -60,10 +61,12 @@ object Repository {
             return@withContext mergeWithLocalList(cache)
             }
         IGDBWrapper.setCredentials(CLIENT_ID, AUTHORIZATION_TOKEN)
-        val apicalypse = APICalypse().fields("*, cover.*").limit(20).sort("rating", Sort.DESCENDING)
+        val apicalypse = APICalypse().fields("*,platforms.*, involved_companies.company.*, cover.*").limit(20).sort("rating", Sort.DESCENDING)
+        val apicalypseSearch = APICalypse().fields("*").limit(20).sort("rating", Sort.DESCENDING)
         try{
             val wrapperGames: List<proto.Game> = IGDBWrapper.games(apicalypse)
-            createGamesFromWrapper(wrapperGames).also {
+            val wrapperCompany: List<Search> = IGDBWrapper.search(apicalypseSearch)
+            createGamesFromWrapper(wrapperGames, wrapperCompany).also {
                 cache = cache + mergeWithLocalList(it)
             }
             shouldRequestNewPage = false
@@ -75,26 +78,55 @@ object Repository {
 
     }
 
-    private fun createGamesFromWrapper(apiGames: List<proto.Game>) : List<Game> {
+    private fun searchListToGamesList(apiSearch: List<Search>): List<Game>{
+        return apiSearch.map {
+            Game(
+                id = it.id,
+                titulo = it.name,
+                imagen = "",
+                plataforma = "",
+                status = GameStatus.SIN_CLASIFICAR,
+                fav = false,
+                sinopsis = "",
+                dev = it.company.name
+            )
+        }
+    }
+    private fun createGamesFromWrapper(apiGames: List<proto.Game>, apiSearch: List<Search>) : List<Game> {
         return apiGames
             .filter {
                 it.id.toInt() != 0 && it.name.isNotEmpty() && !it.platformsList.isNullOrEmpty()
             }
             .map { game ->
+                val devsId = apiSearch
+                    .map { search ->
+                        search.company.id
+                    }
+                val devsNames = game.involvedCompaniesList.map {
+                    it.company.name
+                }
                 Game(
                     id = game.id,
                     titulo = game.name,
                     imagen = imageBuilder(game.cover.imageId),
                     plataforma = game.platformsList?.filter { platform ->
                         platform.name.isNotEmpty()
-                    }?.joinToString(separator = ", ") {it.name!! }.orEmpty(),
+                    }?.joinToString(separator = ", ") { it.name }.orEmpty(),
                     status = GameStatus.SIN_CLASIFICAR,
                     fav = false,
                     sinopsis = "",
-                    dev = ""
+                    dev = devsNames.toString()
                 )
             }
     }
+
+//    private fun getCompanyName(companyId: proto.Company): String? {
+//        // Aquí debes implementar la lógica para obtener el nombre de la compañía
+//        // Hacer una consulta a la API de IGDB para obtener los detalles de la compañía con el ID dado
+//        // Luego, extraer el nombre de la compañía y devolverlo
+//
+//        return
+//    }
 
     private fun mergeWithLocalList(remoteGames: List<Game>): List<Game> {
         val newGames = remoteGames.map { game ->
@@ -118,12 +150,14 @@ object Repository {
         }
         IGDBWrapper.setCredentials(CLIENT_ID, AUTHORIZATION_TOKEN)
         val apicalypse = APICalypse()
-            .fields("*, cover.*")
+            .fields("*,platforms.*, involved_companies.company.*, cover.*")
             .search(query)
             .limit(20)
+        val apicalypseSearch = APICalypse().fields("*").limit(20).sort("rating", Sort.DESCENDING)
         try {
             val wrapperGames: List<proto.Game> = IGDBWrapper.games(apicalypse)
-            createGamesFromWrapper(wrapperGames).also {
+            val wrapperSearch: List<Search> = IGDBWrapper.search(apicalypseSearch)
+            createGamesFromWrapper(wrapperGames, wrapperSearch).also {
                 cache = (cache + mergeWithLocalList(it)).filter { game ->
                     game.titulo.lowercase().contains(query.lowercase())
                 }
