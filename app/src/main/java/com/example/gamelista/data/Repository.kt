@@ -88,10 +88,10 @@ return@withContext listOf()
                 it.id.toInt() != 0 && it.name.isNotEmpty() && !it.platformsList.isNullOrEmpty()
             }
             .map { game ->
-                val devsNames = game.involvedCompaniesList.firstNotNullOf {
+                val devsNames = game.involvedCompaniesList.firstNotNullOfOrNull {
                     it.company.name
                 }
-                val releaseDate = game.releaseDatesList.firstNotNullOf {
+                val releaseDate = game.releaseDatesList.firstNotNullOfOrNull {
                     it.human
                 }
                 Game(
@@ -154,7 +154,7 @@ return@withContext listOf()
             return@withContext listOf()
         }
     }
-    fun imageBuilder(imageID: String): String {
+    private fun imageBuilder(imageID: String): String {
         return imageBuilder(imageID, ImageSize.COVER_BIG, ImageType.PNG)
     }
 
