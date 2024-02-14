@@ -1,6 +1,8 @@
 package com.example.gamelista.ui.detail
 
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -8,18 +10,21 @@ import android.view.ViewGroup
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.gamelista.R
 import com.example.gamelista.adapter.GameListAdapter
+import com.example.gamelista.data.Repository.onFavItem
+import com.example.gamelista.data.Repository.onListedItem
 import com.example.gamelista.databinding.FragmentDetailBinding
+import com.example.gamelista.model.Game
 
 class DetailFragment : Fragment() {
 
     private val binding get() = _binding!!
     private var _binding: FragmentDetailBinding? = null
-    private lateinit var adapter: GameListAdapter
-    private val viewModel: DetailViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -52,6 +57,7 @@ class DetailFragment : Fragment() {
         val SINOP = arguments?.getString("SINOP")
         val DEV = arguments?.getString("DEV")
         val FAV = arguments?.getBoolean("FAV")
+        val DATE = arguments?.getString("DATE")
         if (FAV == true) {
             binding.ivStarDetail.setImageDrawable(
                 ContextCompat.getDrawable(
@@ -70,8 +76,9 @@ class DetailFragment : Fragment() {
         binding.tvGameName.text = NAME
         binding.tvPlatformSpec.text = PLAT
         binding.tvStatusSpec.text = STATUS
-        Glide.with(binding.ivGameDetail.context).load(PIC).centerCrop().into(binding.ivGameDetail)
+        Glide.with(binding.ivGameDetail.context).load(PIC).fitCenter().into(binding.ivGameDetail)
         binding.tvSinopsisSpec.text = SINOP
         binding.tvDevSpec.text = DEV
+        binding.tvLaunchDateSpec.text = DATE
     }
 }

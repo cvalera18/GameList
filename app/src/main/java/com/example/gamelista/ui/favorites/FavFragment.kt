@@ -133,11 +133,12 @@ class FavFragment : Fragment() {
             R.id.action_favFragment2_to_detailFragment, bundleOf(
         "NAME" to game.titulo,
         "PLAT" to game.plataforma,
-        "STATUS" to game.status,
+        "STATUS" to game.status.value,
         "PIC" to game.imagen,
         "SINOP" to game.sinopsis,
         "DEV" to game.dev,
-        "FAV" to game.fav
+        "FAV" to game.fav,
+        "DATE" to game.release_date
         )
         )
     }

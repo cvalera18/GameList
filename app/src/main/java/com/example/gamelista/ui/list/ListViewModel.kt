@@ -18,7 +18,6 @@ import kotlinx.coroutines.launch
 
 class ListViewModel : ViewModel() {
     private val repository = Repository
-    private var currentSearchQuery = ""
     private val _gameList = MutableLiveData<List<Game>>(emptyList())
     val gameList: LiveData<List<Game>> = _gameList
     private val searchQueryStateFlow = MutableStateFlow("")
