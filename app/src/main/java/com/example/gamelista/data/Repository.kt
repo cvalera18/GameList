@@ -5,7 +5,6 @@ import com.api.igdb.apicalypse.Sort
 import com.api.igdb.exceptions.RequestException
 import com.api.igdb.request.IGDBWrapper
 import com.api.igdb.request.games
-import com.api.igdb.request.search
 import com.api.igdb.utils.ImageSize
 import com.api.igdb.utils.ImageType
 import com.api.igdb.utils.imageBuilder
@@ -14,7 +13,6 @@ import com.example.gamelista.model.GameStatus
 //import com.example.gamelista.model.RetrofitServiceFactory
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
-import proto.Search
 
 object Repository {
 
@@ -66,7 +64,7 @@ return@withContext listOf()
             IGDBWrapper.setCredentials(CLIENT_ID, AUTHORIZATION_TOKEN)
             val offset = (currentPage - 1) * pageSize // Calcular el offset
             val apicalypse = APICalypse()
-                .fields("*,platforms.*, involved_companies.company.*, cover.*")
+                .fields("*,platforms.*, involved_companies.company.*, cover.*, release_dates.*")
                 .limit(pageSize)
                 .offset(offset)
                 .sort("rating_count", Sort.DESCENDING)
@@ -90,36 +88,25 @@ return@withContext listOf()
                 it.id.toInt() != 0 && it.name.isNotEmpty() && !it.platformsList.isNullOrEmpty()
             }
             .map { game ->
-                val devsNames = game.involvedCompaniesList.mapNotNull {
+                val devsNames = game.involvedCompaniesList.firstNotNullOf {
                     it.company.name
-                }.firstOrNull()
-                if (devsNames != null) {
-                    Game(
-                        id = game.id,
-                        titulo = game.name,
-                        imagen = imageBuilder(game.cover.imageId),
-                        plataforma = game.platformsList?.filter { platform ->
-                            platform.name.isNotEmpty()
-                        }?.joinToString(separator = ", ") { it.name }.orEmpty(),
-                        status = GameStatus.SIN_CLASIFICAR,
-                        fav = false,
-                        sinopsis = game.id.toString(),
-                        dev = devsNames
-                    )
-                } else {
-                    Game(
-                        id = game.id,
-                        titulo = game.name,
-                        imagen = imageBuilder(game.cover.imageId),
-                        plataforma = game.platformsList?.filter { platform ->
-                            platform.name.isNotEmpty()
-                        }?.joinToString(separator = ", ") { it.name }.orEmpty(),
-                        status = GameStatus.SIN_CLASIFICAR,
-                        fav = false,
-                        sinopsis = game.id.toString(),
-                        dev = "Vacío"
-                    )
                 }
+                val releaseDate = game.releaseDatesList.firstNotNullOf {
+                    it.human
+                }
+                Game(
+                    id = game.id,
+                    titulo = game.name,
+                    imagen = imageBuilder(game.cover.imageId),
+                    plataforma = game.platformsList?.filter { platform ->
+                        platform.name.isNotEmpty()
+                    }?.joinToString(separator = ", ") { it.name }.orEmpty(),
+                    status = GameStatus.SIN_CLASIFICAR,
+                    fav = false,
+                    sinopsis = game.summary,
+                    dev = devsNames,
+                    release_date = releaseDate
+                )
             }
     }
 
@@ -145,7 +132,7 @@ return@withContext listOf()
         val offset = (searchPage - 1) * pageSize // Calcular el offset
         IGDBWrapper.setCredentials(CLIENT_ID, AUTHORIZATION_TOKEN)
         val apicalypse = APICalypse()
-            .fields("*,platforms.*, involved_companies.company.*, cover.*")
+            .fields("*,platforms.*, involved_companies.company.*, cover.*, release_dates.*")
             .limit(pageSize)
             .offset(offset)
             .search(query)
