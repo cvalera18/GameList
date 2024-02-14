@@ -8,7 +8,8 @@ data class Game(
     var status: GameStatus,
     val fav: Boolean,
     var sinopsis: String,
-    var dev: String
+    var dev: String,
+    val release_date: String
 ) {
     // Getter para status
     fun getStatusGame(): GameStatus {

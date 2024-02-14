@@ -9,26 +9,28 @@
 
     <TextView
         android:id="@+id/tvGameName"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
         android:text="The Last of Us: Part 1"
         android:fontFamily="@font/timmana"
+        android:textAlignment="center"
         android:textSize="24sp"
         android:textStyle="bold"
+        android:maxLines="2"
+        android:ellipsize="end"
         app:layout_constraintEnd_toStartOf="@+id/ivStarDetail"
         app:layout_constraintStart_toEndOf="@+id/ivBackArrow"
         app:layout_constraintTop_toTopOf="parent" />
 
     <ImageView
         android:id="@+id/ivGameDetail"
-        android:layout_width="198dp"
-        android:layout_height="203dp"
+        android:layout_width="160dp"
+        android:layout_height="240dp"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
         android:src="@drawable/ic_launcher_background"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/ivBackArrow" />
+        app:layout_constraintTop_toBottomOf="@+id/tvGameName" />
 
     <TextView
         android:id="@+id/tvPlatformDetail"
@@ -57,12 +59,15 @@
 
     <TextView
         android:id="@+id/tvPlatformSpec"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:text="PC"
-        android:textSize="20sp"
-        android:fontFamily="sans-serif-condensed-medium"
         android:layout_marginStart="24dp"
+        android:fontFamily="sans-serif-condensed-medium"
+        android:text="PC"
+        android:textSize="10sp"
+        android:maxLines="3"
+        android:ellipsize="end"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/ivGameDetail"
         app:layout_constraintTop_toBottomOf="@+id/tvPlatformDetail" />
 
@@ -70,10 +75,11 @@
         android:id="@+id/tvStatusSpec"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginStart="24dp"
+        android:fontFamily="sans-serif-condensed-medium"
         android:text="Completado"
         android:textSize="24sp"
-        android:fontFamily="sans-serif-condensed-medium"
-        android:layout_marginStart="24dp"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/ivGameDetail"
         app:layout_constraintTop_toBottomOf="@+id/tvStatusDetail" />
 
@@ -97,6 +103,7 @@
         android:fontFamily="sans-serif-condensed-medium"
         android:text="Naughty Dog"
         android:textSize="20sp"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/ivGameDetail"
         app:layout_constraintTop_toBottomOf="@+id/tvDev" />
 
@@ -120,6 +127,7 @@
         android:fontFamily="sans-serif-condensed-medium"
         android:text="02/09/2023"
         android:textSize="24sp"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/ivGameDetail"
         app:layout_constraintTop_toBottomOf="@+id/tvLaunchDate" />
 
@@ -128,7 +136,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:fontFamily="sans-serif-condensed-medium"
-        android:text="LANZAMIENTO"
+        android:text="SINOPSIS"
         android:textColor="@color/grey2"
         android:textSize="12sp"
         android:layout_marginStart="16dp"

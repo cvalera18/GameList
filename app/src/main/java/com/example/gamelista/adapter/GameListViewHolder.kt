@@ -30,7 +30,7 @@ class GameListViewHolder(
         binding.tvGame.text = gameListModel.titulo
         binding.tvStatus.text = gameListModel.status.value
         binding.tvPlatform.text = gameListModel.plataforma
-        Glide.with(binding.ivGame.context).load(gameListModel.imagen).into(binding.ivGame)
+        Glide.with(binding.ivGame.context).load(gameListModel.imagen).optionalFitCenter().optionalCenterCrop().into(binding.ivGame)
         itemView.setOnClickListener { onClickListener(gameListModel) }
         binding.ivCircle.setOnClickListener { showPopup(gameListModel, onAddToListListener) }
 
@@ -70,7 +70,6 @@ class GameListViewHolder(
         binding.ivStar.setOnClickListener {
             onClickStarListener.invoke(gameListModel)
         }
-
     }
 
 

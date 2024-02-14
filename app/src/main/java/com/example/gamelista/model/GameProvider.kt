@@ -14,7 +14,8 @@ class GameProvider {
                         "En una civilización devastada, donde los infectados y los empedernidos sobrevivientes proliferan, Joel, un protagonista cansado, es " +
                         "contratado para rescatar de contrabando a una niña de 14 años llamada Ellie de una zona de cuarentena militar. Sin embargo,"+
                         "lo que comienza como un pequeño trabajo pronto se transforma en una brutal travesía por todo el país.",
-                "Naughty Dogs"
+                "Naughty Dogs",
+                "Vacío"
             ),
             Game(
                 id =2,
@@ -25,7 +26,8 @@ class GameProvider {
                 false,
                 "Link despierta tras un profundo sueño de 100 años en un misterioso templo en el reino de Hyrule; junto a él, deberemos descubrir su pasado mientras " +
                         "escuchamos una voz que nos incita a enfrentarnos a un malvado ser que provocó el llamado cataclismo: Ganon.",
-                "Nintendo"
+                "Nintendo",
+                "Vacío"
             ),
             Game(
                 id =3,
@@ -39,7 +41,8 @@ class GameProvider {
                         "Con agentes federales y los mejores cazarrecompensas pisando sus talones, la pandilla deberá asaltar, robar y hacerse camino a través de una América " +
                         "despiadada para poder sobrevivir. Mientras crecen las divisiones que amenazan con el fin de la pandilla Arthur debe decidir entre sus propios ideales " +
                         "y su lealtad a la pandilla que lo crió.",
-                "Rockstar Games"
+                "Rockstar Games",
+                "Vacío"
             ),
             Game(
                 id =4,
@@ -51,7 +54,8 @@ class GameProvider {
                 "La historia se sitúa seis años después de los eventos de Resident Evil 3: Nemesis y tiene como protagonista a Leon S. Kennedy. Ahora como agente del " +
                         "Servicio Secreto de los Estados Unidos, es enviado a una misión especial para rescatar a Ashley Graham, la hija del presidente de los Estados Unidos, " +
                         "que ha sido secuestrada por una extraña organización situada en España.",
-                "Capcom"
+                "Capcom",
+                "Vacío"
             ),
             Game(
                 id =5,
@@ -65,7 +69,8 @@ class GameProvider {
                         "\n" +
                         "Pero cuando un feroz enfrentamiento por el poder amenaza con destruir su hogar, el aspirante a héroe entiende que un gran poder conlleva una gran " +
                         "responsabilidad. Para salvar a la Nueva York de Marvel, Miles debe adoptar el manto de Spider-Man y volverlo propio.",
-                "Insomniac Games"
+                "Insomniac Games",
+                "Vacío"
             ),
             Game(
                 id =6,
@@ -78,7 +83,8 @@ class GameProvider {
                         "York, San Francisco y Chicago. El protagonista es Vito Scaletta, un joven siciliano hijo de padres inmigrantes de Sicilia que vuelve a casa tras " +
                         "su involuntario paso por la guerra por cometer un delito. Al llegar a Empire Bay, Joe Barbaro, su amigo de infancia le recibe, y comienza a " +
                         "introducirle en los peligrosos circuitos de la mafia.",
-                "2K Games"
+                "2K Games",
+                "Vacío"
             ),
             Game(
                 id =7,
@@ -93,7 +99,8 @@ class GameProvider {
                         "unirse a su organización después de recibir represalias sobre sus atacantes, y trabaja junto a Sam y Paulie para contribuir a sus estafas, " +
                         "supervisado por el consigliere de Salieri, Frank Colletti, que incluye protección y contrabando. A pesar de los esfuerzos de Morello para " +
                         "hacerse cargo de sus negocios, Tommy logra impresionar a Salieri con su esfuerzo para hacerles frente.",
-                "2K Games"
+                "2K Games",
+                "Vacío"
             ),
             Game(
                 id =8,
@@ -106,7 +113,8 @@ class GameProvider {
                         "de aquellos que hicieron daño a tu familia, podrás vigilar y hackear a cuantos te rodean manipulando todo lo que esté conectado a la red de la " +
                         "ciudad. Accede a las omnipresentes cámaras de seguridad, descarga información personal para localizar a un objetivo, controla los semáforos y el " +
                         "transporte público para detener al enemigo... y mucho más.",
-                "Ubisoft"
+                "Ubisoft",
+                "Vacío"
             ),
             Game(
                 id =9,
@@ -119,7 +127,8 @@ class GameProvider {
                         "cobrado cada vez más importancia, hasta el punto de estar en prácticamente en todos lados de la ciudad de Detroit, sin embargo, estos comienzan a " +
                         "desarrollar sentimientos humanos y, hartos de ser tratados y vistos como esclavos de plástico, se rebelan, provocando graves disputas en la " +
                         "sociedad.",
-                "Quantic Dream"
+                "Quantic Dream",
+                "Vacío"
             ),
             Game(
                 id =10,
@@ -132,7 +141,8 @@ class GameProvider {
                         "La historia sigue después de los acontecimientos del primer juego, donde la introducción de CtOS 2.0 enoja al líder de DedSec, por lo tanto, este le declara la guerra a Blume en San Francisco.\n" +
                         "La misión del jugador es revelar el plan de Blume Corporation con el CtOS.\n" +
                         "Los miembros de DedSec, inspirados en las obras de T-Bone y Aiden Pearce, están decididos a llevar la lucha contra el enemigo.",
-                "Ubisoft"
+                "Ubisoft",
+                "Vacío"
             ),
             Game(
                 id =11,
@@ -144,7 +154,8 @@ class GameProvider {
                 "Sifu cuenta la historia de un joven estudiante de kung-fu con sed de venganza, que busca a los asesinos de su familia. Uno contra todos: no cuenta " +
                         "con ningún aliado y tiene innumerables enemigos. Depende de su dominio único del kung-fu y de un colgante misterioso para perseverar y preservar " +
                         "el legado de su familia.",
-                "Sloclap"
+                "Sloclap",
+                "Vacío"
             )
         )
     }
