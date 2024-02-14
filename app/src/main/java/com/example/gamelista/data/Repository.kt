@@ -25,8 +25,9 @@ object Repository {
     private var modelListedGameList: MutableList<Game> = mutableListOf()
     private var gamesList: MutableList<Game> =
         mutableListOf() //La cambié de val a var, no sé si técnicamente está mal
-    var currentPage = 1
-    var searchPage = 1
+    private var currentPage = 1
+    private val pageSize = 20
+    private var searchPage = 1
     private const val LIMIT = 20
     private var shouldRequestNewPage: Boolean = true
     private lateinit var sharedPreferencesManager: GameSharedPreferencesManager
@@ -37,96 +38,90 @@ object Repository {
     fun initialize(context: Context) {
         sharedPreferencesManager = GameSharedPreferencesManager(context)
     }
+    /*
+suspend fun getGames(): List<Game> = withContext(Dispatchers.IO) {
+if (cache.isNotEmpty() && !shouldRequestNewPage) {
+return@withContext mergeWithLocalList(cache)
+}
+try {
+val response = service.listApiGames(currentPage)
+val apiGames = response.results
 
-    //    suspend fun getGames(): List<Game> = withContext(Dispatchers.IO) {
-//        if (cache.isNotEmpty() && !shouldRequestNewPage) {
-//            return@withContext mergeWithLocalList(cache)
-//        }
-//        try {
-//            val response = service.listApiGames(currentPage)
-//            val apiGames = response.results
-//
-//            createGamesFromApi(apiGames).also {
-//                cache = cache + mergeWithLocalList(it)
-//            }
-//            shouldRequestNewPage = false
-//            return@withContext cache
-//        } catch (e: Exception) {
-//            shouldRequestNewPage = false
-//            return@withContext listOf()
-//        }
-//    }
-    suspend fun getGames(): List<Game> = withContext(Dispatchers.IO) {
-        if (cache.isNotEmpty() && !shouldRequestNewPage) {
-            return@withContext mergeWithLocalList(cache)
+createGamesFromApi(apiGames).also {
+cache = cache + mergeWithLocalList(it)
+}
+shouldRequestNewPage = false
+return@withContext cache
+} catch (e: Exception) {
+shouldRequestNewPage = false
+return@withContext listOf()
+}
+}
+*/
+    suspend fun getGames(): List<Game> {
+        return withContext(Dispatchers.IO) {
+            if (cache.isNotEmpty() && !shouldRequestNewPage) {
+                return@withContext mergeWithLocalList(cache)
             }
-        IGDBWrapper.setCredentials(CLIENT_ID, AUTHORIZATION_TOKEN)
-        val apicalypse = APICalypse().fields("*,platforms.*, involved_companies.company.*, cover.*").limit(20).sort("rating", Sort.DESCENDING)
-        val apicalypseSearch = APICalypse().fields("*").limit(20).sort("rating", Sort.DESCENDING)
-        try{
-            val wrapperGames: List<proto.Game> = IGDBWrapper.games(apicalypse)
-            val wrapperCompany: List<Search> = IGDBWrapper.search(apicalypseSearch)
-            createGamesFromWrapper(wrapperGames, wrapperCompany).also {
-                cache = cache + mergeWithLocalList(it)
+            IGDBWrapper.setCredentials(CLIENT_ID, AUTHORIZATION_TOKEN)
+            val offset = (currentPage - 1) * pageSize // Calcular el offset
+            val apicalypse = APICalypse()
+                .fields("*,platforms.*, involved_companies.company.*, cover.*")
+                .limit(pageSize)
+                .offset(offset)
+                .sort("rating_count", Sort.DESCENDING)
+            try {
+                val wrapperGames: List<proto.Game> = IGDBWrapper.games(apicalypse)
+                createGamesFromWrapper(wrapperGames).also {
+                    cache = cache + mergeWithLocalList(it)
+                }
+                shouldRequestNewPage = false
+                currentPage++ // Incrementar el número de página para la siguiente solicitud
+                return@withContext cache
+            } catch (e: RequestException) {
+                shouldRequestNewPage = false
+                return@withContext listOf()
             }
-            shouldRequestNewPage = false
-            return@withContext cache
-        } catch(e: RequestException) {
-            shouldRequestNewPage = false
-            return@withContext listOf()
-        }
-
-    }
-
-    private fun searchListToGamesList(apiSearch: List<Search>): List<Game>{
-        return apiSearch.map {
-            Game(
-                id = it.id,
-                titulo = it.name,
-                imagen = "",
-                plataforma = "",
-                status = GameStatus.SIN_CLASIFICAR,
-                fav = false,
-                sinopsis = "",
-                dev = it.company.name
-            )
         }
     }
-    private fun createGamesFromWrapper(apiGames: List<proto.Game>, apiSearch: List<Search>) : List<Game> {
+    private fun createGamesFromWrapper(apiGames: List<proto.Game>) : List<Game> {
         return apiGames
             .filter {
                 it.id.toInt() != 0 && it.name.isNotEmpty() && !it.platformsList.isNullOrEmpty()
             }
             .map { game ->
-                val devsId = apiSearch
-                    .map { search ->
-                        search.company.id
-                    }
-                val devsNames = game.involvedCompaniesList.map {
+                val devsNames = game.involvedCompaniesList.mapNotNull {
                     it.company.name
+                }.firstOrNull()
+                if (devsNames != null) {
+                    Game(
+                        id = game.id,
+                        titulo = game.name,
+                        imagen = imageBuilder(game.cover.imageId),
+                        plataforma = game.platformsList?.filter { platform ->
+                            platform.name.isNotEmpty()
+                        }?.joinToString(separator = ", ") { it.name }.orEmpty(),
+                        status = GameStatus.SIN_CLASIFICAR,
+                        fav = false,
+                        sinopsis = game.id.toString(),
+                        dev = devsNames
+                    )
+                } else {
+                    Game(
+                        id = game.id,
+                        titulo = game.name,
+                        imagen = imageBuilder(game.cover.imageId),
+                        plataforma = game.platformsList?.filter { platform ->
+                            platform.name.isNotEmpty()
+                        }?.joinToString(separator = ", ") { it.name }.orEmpty(),
+                        status = GameStatus.SIN_CLASIFICAR,
+                        fav = false,
+                        sinopsis = game.id.toString(),
+                        dev = "Vacío"
+                    )
                 }
-                Game(
-                    id = game.id,
-                    titulo = game.name,
-                    imagen = imageBuilder(game.cover.imageId),
-                    plataforma = game.platformsList?.filter { platform ->
-                        platform.name.isNotEmpty()
-                    }?.joinToString(separator = ", ") { it.name }.orEmpty(),
-                    status = GameStatus.SIN_CLASIFICAR,
-                    fav = false,
-                    sinopsis = "",
-                    dev = devsNames.toString()
-                )
             }
     }
-
-//    private fun getCompanyName(companyId: proto.Company): String? {
-//        // Aquí debes implementar la lógica para obtener el nombre de la compañía
-//        // Hacer una consulta a la API de IGDB para obtener los detalles de la compañía con el ID dado
-//        // Luego, extraer el nombre de la compañía y devolverlo
-//
-//        return
-//    }
 
     private fun mergeWithLocalList(remoteGames: List<Game>): List<Game> {
         val newGames = remoteGames.map { game ->
@@ -137,7 +132,6 @@ object Repository {
                 game
             }
         }
-
         return newGames
     }
 
@@ -148,21 +142,23 @@ object Repository {
         if (query != lastQuery) {
             searchPage = 1
         }
+        val offset = (searchPage - 1) * pageSize // Calcular el offset
         IGDBWrapper.setCredentials(CLIENT_ID, AUTHORIZATION_TOKEN)
         val apicalypse = APICalypse()
             .fields("*,platforms.*, involved_companies.company.*, cover.*")
+            .limit(pageSize)
+            .offset(offset)
             .search(query)
-            .limit(20)
-        val apicalypseSearch = APICalypse().fields("*").limit(20).sort("rating", Sort.DESCENDING)
+//            .sort("rating_count", Sort.DESCENDING)
         try {
             val wrapperGames: List<proto.Game> = IGDBWrapper.games(apicalypse)
-            val wrapperSearch: List<Search> = IGDBWrapper.search(apicalypseSearch)
-            createGamesFromWrapper(wrapperGames, wrapperSearch).also {
+            createGamesFromWrapper(wrapperGames).also {
                 cache = (cache + mergeWithLocalList(it)).filter { game ->
                     game.titulo.lowercase().contains(query.lowercase())
                 }
                 lastQuery = query
                 shouldRequestNewPage = false
+                searchPage++ // Incrementar el número de página para la siguiente solicitud de búsqueda
             }
             cache
         } catch (e: Exception) {
