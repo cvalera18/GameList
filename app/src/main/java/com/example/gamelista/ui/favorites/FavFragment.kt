@@ -71,7 +71,7 @@ class FavFragment : Fragment() {
 
     private fun configSwipe() {
 
-        binding.swipe.setColorSchemeResources(R.color.grey, R.color.blueoscuro)
+//        binding.swipe.setColorSchemeResources(R.color.md_theme_outline_highContrast, R.color.md_theme_primary_highContrast)
         binding.swipe.setOnRefreshListener {
             if (!isLoading) {
                 isLoading = true
@@ -107,7 +107,7 @@ class FavFragment : Fragment() {
             DividerItemDecoration(binding.recyclerGameList.context, llmanager.orientation)
         binding.recyclerGameList.layoutManager = llmanager
         binding.recyclerGameList.adapter = adapter
-        binding.recyclerGameList.addItemDecoration(decoration)
+//        binding.recyclerGameList.addItemDecoration(decoration)
     }
 
     private fun onFavItem(game: Game) {

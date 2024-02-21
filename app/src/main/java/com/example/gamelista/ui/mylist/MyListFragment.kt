@@ -63,7 +63,7 @@ class MyListFragment : Fragment() {
 
     private fun configSwipe() {
 
-        binding.swipe.setColorSchemeResources(R.color.grey, R.color.blueoscuro)
+//        binding.swipe.setColorSchemeResources(R.color.grey, R.color.blueoscuro)
         binding.swipe.setOnRefreshListener {
             if (!isLoading) {
                 isLoading = true
@@ -95,7 +95,7 @@ class MyListFragment : Fragment() {
             DividerItemDecoration(binding.recyclerGameList.context, llmanager.orientation)
         binding.recyclerGameList.layoutManager = llmanager
         binding.recyclerGameList.adapter = adapter
-        binding.recyclerGameList.addItemDecoration(decoration)
+//        binding.recyclerGameList.addItemDecoration(decoration)
     }
 
     private fun onFavItem(game: Game) {

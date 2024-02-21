@@ -4,7 +4,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/grey"
     tools:context=".ui.detail.DetailFragment">
 
     <TextView
@@ -40,7 +39,6 @@
         android:fontFamily="sans-serif-condensed-medium"
         android:singleLine="true"
         android:text="PLATAFORMA"
-        android:textColor="@color/grey2"
         android:textSize="12sp"
         app:layout_constraintStart_toEndOf="@+id/ivGameDetail"
         app:layout_constraintTop_toBottomOf="@+id/tvGameName" />
@@ -50,7 +48,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="ESTADO"
-        android:textColor="@color/grey2"
         android:fontFamily="sans-serif-condensed-medium"
         android:layout_marginStart="10dp"
         android:textSize="12sp"
@@ -90,7 +87,6 @@
         android:layout_marginStart="10dp"
         android:fontFamily="sans-serif-condensed-medium"
         android:text="DESARROLLADOR"
-        android:textColor="@color/grey2"
         android:textSize="12sp"
         app:layout_constraintStart_toEndOf="@+id/ivGameDetail"
         app:layout_constraintTop_toBottomOf="@+id/tvStatusSpec" />
@@ -114,7 +110,6 @@
         android:layout_marginStart="10dp"
         android:fontFamily="sans-serif-condensed-medium"
         android:text="LANZAMIENTO"
-        android:textColor="@color/grey2"
         android:textSize="12sp"
         app:layout_constraintStart_toEndOf="@+id/ivGameDetail"
         app:layout_constraintTop_toBottomOf="@+id/tvDevSpec" />
@@ -137,7 +132,6 @@
         android:layout_height="wrap_content"
         android:fontFamily="sans-serif-condensed-medium"
         android:text="SINOPSIS"
-        android:textColor="@color/grey2"
         android:textSize="12sp"
         android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
@@ -151,7 +145,6 @@
         android:padding="10dp"
         android:fontFamily="sans-serif-condensed-medium"
         android:text="@string/tlou1sinopsis"
-        android:textColor="@color/blueoscuro"
         android:layout_marginStart="16dp"
         android:layout_marginEnd="16dp"
         android:textSize="18sp"
@@ -170,14 +163,13 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tvSinopsisSpec"
-        app:tint="@color/green" />
+        app:tint="@color/md_theme_secondaryFixed_highContrast" />
 
     <TextView
         android:id="@+id/tvPoints"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:fontFamily="@font/denk_one"
-        android:textColor="@color/white"
         android:text="93"
         android:textSize="36sp"
         app:layout_constraintBottom_toBottomOf="@+id/ivCirclePoint"

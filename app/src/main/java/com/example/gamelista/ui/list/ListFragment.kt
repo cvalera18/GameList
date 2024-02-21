@@ -67,7 +67,7 @@ class ListFragment : Fragment() {
 
     private fun configSwipe() {
 
-        binding.swipe.setColorSchemeResources(R.color.grey, R.color.blueoscuro)
+//        binding.swipe.setColorSchemeResources(R.color.md_theme_outline_highContrast, R.color.md_theme_primary_highContrast)
         binding.swipe.setOnRefreshListener {
             if (!isLoading) {
                 isLoading = true
@@ -99,7 +99,7 @@ class ListFragment : Fragment() {
         val decoration = DividerItemDecoration(activity, llmanager.orientation)
         binding.recyclerGameList.layoutManager = llmanager
         binding.recyclerGameList.adapter = adapter
-        binding.recyclerGameList.addItemDecoration(decoration)
+//        binding.recyclerGameList.addItemDecoration(decoration)
 
 //         Agregar ScrollListener para cargar más juegos al llegar al final de la lista
         binding.recyclerGameList.addOnScrollListener(object : RecyclerView.OnScrollListener() {

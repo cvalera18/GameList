@@ -18,11 +18,9 @@
             android:padding="8dp"
             android:hint="@string/buscar"
             android:imeOptions="actionDone"
-            android:textColorHint="@color/white"
             android:textStyle="italic"
             android:alpha="0.85"
-            android:textColor="@color/white"
-            android:background="@color/green"
+            android:drawableEnd="@drawable/baseline_search_white"
             android:inputType="text"
             android:maxLines="1"
             android:singleLine="true" />
@@ -35,15 +33,7 @@
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/recyclerGameList"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@color/green" />
-            <!--<Button
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:id="@+id/btnAddGame"
-                android:layout_gravity="bottom"
-                android:text="New Game"/>-->
-
+                android:layout_height="wrap_content" />
         </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
     </LinearLayout>
 
