@@ -88,10 +88,10 @@ return@withContext listOf()
                 it.id.toInt() != 0 && it.name.isNotEmpty() && !it.platformsList.isNullOrEmpty()
             }
             .map { game ->
-                val devsNames = game.involvedCompaniesList.firstNotNullOf {
+                val devsNames = game.involvedCompaniesList.firstNotNullOfOrNull {
                     it.company.name
                 }
-                val releaseDate = game.releaseDatesList.firstNotNullOf {
+                val releaseDate = game.releaseDatesList.firstNotNullOfOrNull {
                     it.human
                 }
                 Game(
@@ -133,9 +133,9 @@ return@withContext listOf()
         IGDBWrapper.setCredentials(CLIENT_ID, AUTHORIZATION_TOKEN)
         val apicalypse = APICalypse()
             .fields("*,platforms.*, involved_companies.company.*, cover.*, release_dates.*")
+            .search(query)
             .limit(pageSize)
             .offset(offset)
-            .search(query)
 //            .sort("rating_count", Sort.DESCENDING)
         try {
             val wrapperGames: List<proto.Game> = IGDBWrapper.games(apicalypse)
@@ -210,7 +210,6 @@ return@withContext listOf()
         game.setStatusGame(status)
 
         val currentGame = modelListedGameList
-            //.firstOrNull { gameInList -> gameInList.titulo == game.titulo }
             .firstOrNull { gameInList -> gameInList.id == game.id }
             ?.let { nonNullGame ->
                 val index = modelListedGameList.indexOf(nonNullGame)
@@ -257,7 +256,6 @@ return@withContext listOf()
 
     private fun addGameToList(newGame: Game) {
         val actual = gamesList.firstOrNull { it.id == newGame.id }
-//        val actual = modelListedGameList.firstOrNull { it.id == newGame.id }
         if (actual != null) {
             gamesList.remove(actual)
             gamesList.add(newGame)
