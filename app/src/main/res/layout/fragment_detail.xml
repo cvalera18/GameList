@@ -47,26 +47,53 @@
         android:id="@+id/tvStatusDetail"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:fontFamily="sans-serif-condensed-medium"
+        android:layout_marginTop="5dp"
         android:text="ESTADO"
-        android:fontFamily="sans-serif-condensed-medium"
-        android:layout_marginStart="10dp"
         android:textSize="12sp"
-        app:layout_constraintStart_toEndOf="@+id/ivGameDetail"
-        app:layout_constraintTop_toBottomOf="@+id/tvPlatformSpec" />
+        app:layout_constraintStart_toStartOf="@+id/tvDev"
+        app:layout_constraintTop_toBottomOf="@+id/tvDevSpec" />
 
-    <TextView
-        android:id="@+id/tvPlatformSpec"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="24dp"
-        android:fontFamily="sans-serif-condensed-medium"
-        android:text="PC"
-        android:textSize="10sp"
-        android:maxLines="3"
-        android:ellipsize="end"
-        app:layout_constraintEnd_toEndOf="parent"
+    <ImageView
+        android:id="@+id/ivPlat1"
+        android:layout_width="40dp"
+        android:layout_height="25dp"
+        android:layout_marginStart="10dp"
         app:layout_constraintStart_toEndOf="@+id/ivGameDetail"
         app:layout_constraintTop_toBottomOf="@+id/tvPlatformDetail" />
+
+    <ImageView
+        android:id="@+id/ivPlat2"
+        android:layout_width="40dp"
+        android:layout_height="25dp"
+        android:layout_marginStart="5dp"
+        app:layout_constraintStart_toEndOf="@+id/ivPlat1"
+        app:layout_constraintTop_toBottomOf="@+id/tvPlatformDetail" />
+
+    <ImageView
+        android:id="@+id/ivPlat3"
+        android:layout_width="40dp"
+        android:layout_height="25dp"
+        android:layout_marginStart="5dp"
+        app:layout_constraintStart_toEndOf="@+id/ivPlat2"
+        app:layout_constraintTop_toBottomOf="@+id/tvPlatformDetail" />
+
+    <ImageView
+        android:id="@+id/ivPlat4"
+        android:layout_width="40dp"
+        android:layout_height="25dp"
+        android:layout_marginStart="5dp"
+        app:layout_constraintStart_toEndOf="@+id/ivPlat3"
+        app:layout_constraintTop_toBottomOf="@+id/tvPlatformDetail" />
+
+    <ImageView
+        android:id="@+id/ivPlat5"
+        android:layout_width="40dp"
+        android:layout_height="25dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="2dp"
+        app:layout_constraintStart_toEndOf="@+id/ivGameDetail"
+        app:layout_constraintTop_toBottomOf="@+id/ivPlat1" />
 
     <TextView
         android:id="@+id/tvStatusSpec"
@@ -80,16 +107,17 @@
         app:layout_constraintStart_toEndOf="@+id/ivGameDetail"
         app:layout_constraintTop_toBottomOf="@+id/tvStatusDetail" />
 
+
     <TextView
         android:id="@+id/tvDev"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="10dp"
         android:fontFamily="sans-serif-condensed-medium"
+        android:layout_marginTop="5dp"
         android:text="DESARROLLADOR"
         android:textSize="12sp"
-        app:layout_constraintStart_toEndOf="@+id/ivGameDetail"
-        app:layout_constraintTop_toBottomOf="@+id/tvStatusSpec" />
+        app:layout_constraintStart_toStartOf="@+id/tvLaunchDate"
+        app:layout_constraintTop_toBottomOf="@+id/tvLaunchDateSpec" />
 
     <TextView
         android:id="@+id/tvDevSpec"
@@ -108,12 +136,12 @@
         android:id="@+id/tvLaunchDate"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="10dp"
         android:fontFamily="sans-serif-condensed-medium"
         android:text="LANZAMIENTO"
+        android:layout_marginTop="5dp"
         android:textSize="12sp"
-        app:layout_constraintStart_toEndOf="@+id/ivGameDetail"
-        app:layout_constraintTop_toBottomOf="@+id/tvDevSpec" />
+        app:layout_constraintStart_toStartOf="@+id/tvPlatformDetail"
+        app:layout_constraintTop_toBottomOf="@+id/ivPlat5" />
 
     <TextView
         android:id="@+id/tvLaunchDateSpec"
@@ -152,31 +180,6 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tvSinopsis" />
-
-<!--    <ImageView-->
-<!--        android:id="@+id/ivCirclePoint"-->
-<!--        android:layout_width="wrap_content"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        android:layout_marginTop="10dp"-->
-<!--        android:scaleType="center"-->
-<!--        android:src="@drawable/baseline_circle_24"-->
-<!--        app:layout_constraintBottom_toBottomOf="parent"-->
-<!--        app:layout_constraintEnd_toEndOf="parent"-->
-<!--        app:layout_constraintStart_toStartOf="parent"-->
-<!--        app:layout_constraintTop_toBottomOf="@+id/tvSinopsisSpec"-->
-<!--        app:tint="@color/md_theme_secondaryFixed_highContrast" />-->
-
-<!--    <TextView-->
-<!--        android:id="@+id/tvPoints"-->
-<!--        android:layout_width="wrap_content"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        android:fontFamily="@font/denk_one"-->
-<!--        android:text="93"-->
-<!--        android:textSize="36sp"-->
-<!--        app:layout_constraintBottom_toBottomOf="@+id/ivCirclePoint"-->
-<!--        app:layout_constraintEnd_toEndOf="@+id/ivCirclePoint"-->
-<!--        app:layout_constraintStart_toStartOf="@+id/ivCirclePoint"-->
-<!--        app:layout_constraintTop_toTopOf="@+id/ivCirclePoint" />-->
 
     <ImageView
         android:id="@+id/ivStarDetail"

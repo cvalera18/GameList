@@ -38,13 +38,10 @@ class GameListViewHolder(
             binding.ivPlatLogo6
         )
 
-
-//        Glide.with(binding.ivPlatLogo.context).load(tercerPlat).fitCenter().into(binding.ivPlatLogo3)
-//        Glide.with(binding.ivPlatLogo.context).load(gameListModel.plataforma).fitCenter().into(binding.ivPlatLogo)
         Glide.with(binding.ivGame.context).load(gameListModel.imagen).optionalFitCenter()
             .optionalCenterCrop().into(binding.ivGame)
         itemView.setOnClickListener { onClickListener(gameListModel) }
-        binding.ivCircle.setOnClickListener { showPopup(gameListModel, onAddToListListener) }
+        binding.statusCard.setOnClickListener { showPopup(gameListModel, onAddToListListener) }
 
         if (gameListModel.status != GameStatus.SIN_CLASIFICAR) {
             binding.ivCircle.setImageDrawable(

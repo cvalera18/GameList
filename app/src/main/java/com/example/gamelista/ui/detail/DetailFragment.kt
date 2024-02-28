@@ -52,6 +52,10 @@ class DetailFragment : Fragment() {
     private fun initInfo() {
         val NAME = arguments?.getString("NAME")
         val PLAT = arguments?.getString("PLAT")
+        val PLAT2 = arguments?.getString("PLAT2")
+        val PLAT3 = arguments?.getString("PLAT3")
+        val PLAT4 = arguments?.getString("PLAT4")
+        val PLAT5 = arguments?.getString("PLAT5")
         val STATUS = arguments?.getString("STATUS")
         val PIC = arguments?.getString("PIC")
         val SINOP = arguments?.getString("SINOP")
@@ -74,7 +78,11 @@ class DetailFragment : Fragment() {
             )
         }
         binding.tvGameName.text = NAME
-        binding.tvPlatformSpec.text = PLAT
+        Glide.with(binding.ivGameDetail.context).load(PLAT).fitCenter().into(binding.ivPlat1)
+        Glide.with(binding.ivGameDetail.context).load(PLAT2).fitCenter().into(binding.ivPlat2)
+        Glide.with(binding.ivGameDetail.context).load(PLAT3).fitCenter().into(binding.ivPlat3)
+        Glide.with(binding.ivGameDetail.context).load(PLAT4).fitCenter().into(binding.ivPlat4)
+        Glide.with(binding.ivGameDetail.context).load(PLAT5).fitCenter().into(binding.ivPlat5)
         binding.tvStatusSpec.text = STATUS
         Glide.with(binding.ivGameDetail.context).load(PIC).fitCenter().into(binding.ivGameDetail)
         binding.tvSinopsisSpec.text = SINOP

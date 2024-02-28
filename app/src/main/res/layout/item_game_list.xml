@@ -13,6 +13,51 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/statusCard"
+            style="@style/Widget.Material3.CardView.Filled"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:backgroundTint="@color/md_theme_secondaryFixedDim"
+            app:cardElevation="3dp"
+            android:layout_marginTop="10dp"
+            app:layout_constraintStart_toStartOf="@+id/favCardView"
+            app:layout_constraintTop_toBottomOf="@+id/tvGame">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:padding="5dp">
+
+                <ImageView
+                    android:id="@+id/ivCircle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:src="@drawable/bx_circle"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/tvStatus"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="12dp"
+                    android:layout_marginEnd="2dp"
+                    android:text="Sin Clasificar"
+                    android:textSize="16sp"
+                    android:textStyle="italic"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/ivCircle"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+        </com.google.android.material.card.MaterialCardView>
+
         <TextView
             android:id="@+id/tvGame"
             android:layout_width="0dp"
@@ -22,20 +67,9 @@
             android:text="The Last of Us Part 1"
             android:textSize="18sp"
             android:textStyle="bold"
+            app:layout_constraintEnd_toStartOf="@+id/ivPlatLogo3"
             app:layout_constraintStart_toEndOf="@+id/ivGame"
             app:layout_constraintTop_toTopOf="parent" />
-
-        <TextView
-            android:id="@+id/tvStatus"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="20dp"
-            android:layout_marginTop="10dp"
-            android:text="Jugado"
-            android:textSize="16sp"
-            android:textStyle="italic"
-            app:layout_constraintStart_toEndOf="@+id/ivCircle"
-            app:layout_constraintTop_toBottomOf="@+id/tvGame" />
 
         <com.google.android.material.card.MaterialCardView
             android:id="@+id/favCardView"
@@ -44,11 +78,11 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="20dp"
             android:layout_marginBottom="10dp"
+            android:backgroundTint="@color/md_theme_secondaryFixedDim"
+            app:cardElevation="3dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toEndOf="@+id/ivGame"
-            app:layout_constraintTop_toBottomOf="@+id/ivCircle"
-            android:backgroundTint="@color/md_theme_secondaryFixedDim"
-            app:cardElevation="3dp">
+            app:layout_constraintTop_toBottomOf="@+id/statusCard">
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
@@ -68,6 +102,8 @@
                 <com.google.android.material.textview.MaterialTextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginStart="12dp"
+                    android:layout_marginEnd="2dp"
                     android:text="Favorito"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
@@ -80,39 +116,18 @@
         </com.google.android.material.card.MaterialCardView>
 
 
-        <ImageView
-            android:id="@+id/ivCircle"
+        <TextView
+            android:id="@+id/tvPlatform"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="20dp"
-            android:layout_marginTop="10dp"
-            android:paddingEnd="4dp"
-            android:src="@drawable/bx_circle"
-            app:layout_constraintStart_toEndOf="@+id/ivGame"
-            app:layout_constraintTop_toBottomOf="@+id/tvGame" />
-
-        <com.google.android.material.card.MaterialCardView
-            android:id="@+id/btnConsole"
-            android:layout_width="100dp"
-            android:layout_height="wrap_content"
-            android:layout_alignParentEnd="true"
-            android:layout_marginTop="8dp"
-            android:layout_marginEnd="5dp"
-            android:visibility="invisible"
-            app:cardBackgroundColor="@color/md_theme_primaryFixed_mediumContrast"
-            app:cardCornerRadius="15dp"
-            app:layout_constraintBottom_toTopOf="@+id/ivCircle"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tvGame">
-
-            <TextView
-                android:id="@+id/tvPlatform"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                android:text="PC - PS4 - PS5"
-                android:textSize="11sp" />
-        </com.google.android.material.card.MaterialCardView>
+            android:layout_gravity="center_horizontal"
+            android:text="Plataformas"
+            android:textSize="11sp"
+            android:textStyle="italic"
+            android:layout_marginTop="25dp"
+            app:layout_constraintEnd_toEndOf="@+id/ivPlatLogo4"
+            app:layout_constraintStart_toStartOf="@+id/ivPlatLogo3"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <ImageView
             android:id="@+id/ivPlatLogo"
@@ -121,7 +136,7 @@
             android:layout_margin="5dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/favCardView"
-            app:layout_constraintTop_toBottomOf="@+id/btnConsole" />
+            app:layout_constraintTop_toBottomOf="@+id/tvPlatform" />
 
         <ImageView
             android:id="@+id/ivPlatLogo2"
@@ -129,7 +144,7 @@
             android:layout_height="25dp"
             android:layout_margin="5dp"
             app:layout_constraintStart_toEndOf="@+id/ivPlatLogo"
-            app:layout_constraintTop_toBottomOf="@+id/btnConsole" />
+            app:layout_constraintTop_toBottomOf="@+id/tvPlatform" />
 
         <ImageView
             android:id="@+id/ivPlatLogo3"
