@@ -22,11 +22,10 @@ object Repository {
     private var lastQuery: String = ""
     private var modelListedGameList: MutableList<Game> = mutableListOf()
     private var gamesList: MutableList<Game> =
-        mutableListOf() //La cambié de val a var, no sé si técnicamente está mal
+        mutableListOf()
     private var currentPage = 1
     private val pageSize = 20
     private var searchPage = 1
-    private const val LIMIT = 20
     private var shouldRequestNewPage: Boolean = true
     private lateinit var sharedPreferencesManager: GameSharedPreferencesManager
     private const val BASE_URL = "https://api.igdb.com/v4/"
@@ -64,7 +63,7 @@ return@withContext listOf()
             IGDBWrapper.setCredentials(CLIENT_ID, AUTHORIZATION_TOKEN)
             val offset = (currentPage - 1) * pageSize // Calcular el offset
             val apicalypse = APICalypse()
-                .fields("*,platforms.*, involved_companies.company.*, cover.*, release_dates.*")
+                .fields("*,platforms.platform_logo.*, involved_companies.company.*, cover.*, release_dates.*, external_games.*")
                 .limit(pageSize)
                 .offset(offset)
                 .sort("rating_count", Sort.DESCENDING)
@@ -94,13 +93,17 @@ return@withContext listOf()
                 val releaseDate = game.releaseDatesList.firstNotNullOfOrNull {
                     it.human
                 }
+                val platfomsIconList = game.platformsList.map { platform ->
+                    platform.platformLogo.imageId
+                }
                 Game(
                     id = game.id,
                     titulo = game.name,
                     imagen = imageBuilder(game.cover.imageId),
-                    plataforma = game.platformsList?.filter { platform ->
-                        platform.name.isNotEmpty()
-                    }?.joinToString(separator = ", ") { it.name }.orEmpty(),
+                    plataforma = imageIconBuilder(platfomsIconList),
+//                    plataforma = game.platformsList?.filter { platform ->
+//                        platform.name.isNotEmpty()
+//                    }?.joinToString(separator = ", ") { it.name }.orEmpty(),
                     status = GameStatus.SIN_CLASIFICAR,
                     fav = false,
                     sinopsis = game.summary,
@@ -132,7 +135,7 @@ return@withContext listOf()
         val offset = (searchPage - 1) * pageSize // Calcular el offset
         IGDBWrapper.setCredentials(CLIENT_ID, AUTHORIZATION_TOKEN)
         val apicalypse = APICalypse()
-            .fields("*,platforms.*, involved_companies.company.*, cover.*, release_dates.*")
+            .fields("*,platforms.platform_logo.*, involved_companies.company.*, cover.*, release_dates.*, external_games.*")
             .search(query)
             .limit(pageSize)
             .offset(offset)
@@ -154,8 +157,11 @@ return@withContext listOf()
             return@withContext listOf()
         }
     }
-    fun imageBuilder(imageID: String): String {
+    private fun imageBuilder(imageID: String): String {
         return imageBuilder(imageID, ImageSize.COVER_BIG, ImageType.PNG)
+    }
+    private fun imageIconBuilder(imageIDs: List<String>): List<String> {
+        return imageIDs.map { imageBuilder(it, ImageSize.LOGO_MEDIUM, ImageType.PNG) }
     }
 
     fun onListedItem(game: Game, status: GameStatus): List<Game> {
@@ -279,7 +285,6 @@ return@withContext listOf()
         currentPage++
         shouldRequestNewPage = true
     }
-
 //    private fun createGamesFromApi(apiGames: List<com.example.gamelista.data.model.NetworkGame>): List<Game> {
 //        return apiGames
 //            .filter {
@@ -300,6 +305,4 @@ return@withContext listOf()
 //                )
 //            }
 //    }
-
-
 }

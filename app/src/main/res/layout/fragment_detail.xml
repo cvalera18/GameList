@@ -70,7 +70,7 @@
 
     <TextView
         android:id="@+id/tvStatusSpec"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="24dp"
         android:fontFamily="sans-serif-condensed-medium"
@@ -93,12 +93,13 @@
 
     <TextView
         android:id="@+id/tvDevSpec"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="24dp"
         android:fontFamily="sans-serif-condensed-medium"
         android:text="Naughty Dog"
         android:textSize="20sp"
+        android:maxLines="2"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/ivGameDetail"
         app:layout_constraintTop_toBottomOf="@+id/tvDev" />
@@ -116,7 +117,7 @@
 
     <TextView
         android:id="@+id/tvLaunchDateSpec"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="24dp"
         android:fontFamily="sans-serif-condensed-medium"
@@ -152,30 +153,30 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tvSinopsis" />
 
-    <ImageView
-        android:id="@+id/ivCirclePoint"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:scaleType="center"
-        android:src="@drawable/baseline_circle_24"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tvSinopsisSpec"
-        app:tint="@color/md_theme_secondaryFixed_highContrast" />
+<!--    <ImageView-->
+<!--        android:id="@+id/ivCirclePoint"-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:layout_marginTop="10dp"-->
+<!--        android:scaleType="center"-->
+<!--        android:src="@drawable/baseline_circle_24"-->
+<!--        app:layout_constraintBottom_toBottomOf="parent"-->
+<!--        app:layout_constraintEnd_toEndOf="parent"-->
+<!--        app:layout_constraintStart_toStartOf="parent"-->
+<!--        app:layout_constraintTop_toBottomOf="@+id/tvSinopsisSpec"-->
+<!--        app:tint="@color/md_theme_secondaryFixed_highContrast" />-->
 
-    <TextView
-        android:id="@+id/tvPoints"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:fontFamily="@font/denk_one"
-        android:text="93"
-        android:textSize="36sp"
-        app:layout_constraintBottom_toBottomOf="@+id/ivCirclePoint"
-        app:layout_constraintEnd_toEndOf="@+id/ivCirclePoint"
-        app:layout_constraintStart_toStartOf="@+id/ivCirclePoint"
-        app:layout_constraintTop_toTopOf="@+id/ivCirclePoint" />
+<!--    <TextView-->
+<!--        android:id="@+id/tvPoints"-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:fontFamily="@font/denk_one"-->
+<!--        android:text="93"-->
+<!--        android:textSize="36sp"-->
+<!--        app:layout_constraintBottom_toBottomOf="@+id/ivCirclePoint"-->
+<!--        app:layout_constraintEnd_toEndOf="@+id/ivCirclePoint"-->
+<!--        app:layout_constraintStart_toStartOf="@+id/ivCirclePoint"-->
+<!--        app:layout_constraintTop_toTopOf="@+id/ivCirclePoint" />-->
 
     <ImageView
         android:id="@+id/ivStarDetail"

@@ -4,7 +4,7 @@ data class Game(
     val id: Long,
     val titulo: String,
     val imagen: String,
-    val plataforma: String,
+    val plataforma: List<String>,
     var status: GameStatus,
     val fav: Boolean,
     var sinopsis: String,
