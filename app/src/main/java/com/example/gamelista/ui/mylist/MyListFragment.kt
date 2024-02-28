@@ -107,17 +107,35 @@ class MyListFragment : Fragment() {
     }
 
     private fun onItemSelected(game: Game) {
-        findNavController().navigate(
-            R.id.action_myListFragment_to_detailFragment, bundleOf(
-                "NAME" to game.titulo,
-                "PLAT" to game.plataforma,
-                "STATUS" to game.status.value,
-                "PIC" to game.imagen,
-                "SINOP" to game.sinopsis,
-                "DEV" to game.dev,
-                "FAV" to game.fav,
-                "DATE" to game.release_date
-            )
-        )
+        val bundle = Bundle().apply {
+            putString("NAME", game.titulo)
+            putString("STATUS", game.status.value)
+            putString("PIC", game.imagen)
+            putString("SINOP", game.sinopsis)
+            putString("DEV", game.dev)
+            putBoolean("FAV", game.fav)
+            putString("DATE", game.release_date)
+        }
+
+        if (game.plataforma.size >= 1) {
+            bundle.putString("PLAT", game.plataforma[0])
+        }
+        if (game.plataforma.size >= 2) {
+            bundle.putString("PLAT2", game.plataforma[1])
+        }
+        if (game.plataforma.size >= 3) {
+            bundle.putString("PLAT3", game.plataforma[2])
+        }
+        if (game.plataforma.size >= 4) {
+            bundle.putString("PLAT4", game.plataforma[3])
+        }
+        if (game.plataforma.size >= 5) {
+            bundle.putString("PLAT5", game.plataforma[4])
+        }
+        if (game.plataforma.size >= 6) {
+            bundle.putString("PLAT6", game.plataforma[5])
+        }
+
+        findNavController().navigate(R.id.action_myListFragment_to_detailFragment, bundle)
     }
 }

@@ -161,7 +161,7 @@ return@withContext listOf()
         return imageBuilder(imageID, ImageSize.COVER_BIG, ImageType.PNG)
     }
     private fun imageIconBuilder(imageIDs: List<String>): List<String> {
-        return imageIDs.map { imageBuilder(it, ImageSize.LOGO_MEDIUM, ImageType.PNG) }
+        return imageIDs.map { imageBuilder(it, ImageSize.COVER_SMALL, ImageType.PNG) }
     }
 
     fun onListedItem(game: Game, status: GameStatus): List<Game> {

@@ -156,6 +156,9 @@ class ListFragment : Fragment() {
         if (game.plataforma.size >= 5) {
             bundle.putString("PLAT5", game.plataforma[4])
         }
+        if (game.plataforma.size >= 6) {
+            bundle.putString("PLAT6", game.plataforma[5])
+        }
 
         findNavController().navigate(R.id.action_listFragment_to_detailFragment, bundle)
     }

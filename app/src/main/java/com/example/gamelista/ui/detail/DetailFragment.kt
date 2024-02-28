@@ -56,6 +56,7 @@ class DetailFragment : Fragment() {
         val PLAT3 = arguments?.getString("PLAT3")
         val PLAT4 = arguments?.getString("PLAT4")
         val PLAT5 = arguments?.getString("PLAT5")
+        val PLAT6 = arguments?.getString("PLAT6")
         val STATUS = arguments?.getString("STATUS")
         val PIC = arguments?.getString("PIC")
         val SINOP = arguments?.getString("SINOP")
@@ -83,6 +84,7 @@ class DetailFragment : Fragment() {
         Glide.with(binding.ivGameDetail.context).load(PLAT3).fitCenter().into(binding.ivPlat3)
         Glide.with(binding.ivGameDetail.context).load(PLAT4).fitCenter().into(binding.ivPlat4)
         Glide.with(binding.ivGameDetail.context).load(PLAT5).fitCenter().into(binding.ivPlat5)
+        Glide.with(binding.ivGameDetail.context).load(PLAT6).fitCenter().into(binding.ivPlat6)
         binding.tvStatusSpec.text = STATUS
         Glide.with(binding.ivGameDetail.context).load(PIC).fitCenter().into(binding.ivGameDetail)
         binding.tvSinopsisSpec.text = SINOP

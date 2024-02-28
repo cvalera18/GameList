@@ -124,15 +124,15 @@
             android:text="Plataformas"
             android:textSize="11sp"
             android:textStyle="italic"
-            android:layout_marginTop="25dp"
+            android:layout_marginTop="20dp"
             app:layout_constraintEnd_toEndOf="@+id/ivPlatLogo4"
             app:layout_constraintStart_toStartOf="@+id/ivPlatLogo3"
             app:layout_constraintTop_toTopOf="parent" />
 
         <ImageView
             android:id="@+id/ivPlatLogo"
-            android:layout_width="40dp"
-            android:layout_height="25dp"
+            android:layout_width="45dp"
+            android:layout_height="30dp"
             android:layout_margin="5dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/favCardView"
@@ -140,16 +140,16 @@
 
         <ImageView
             android:id="@+id/ivPlatLogo2"
-            android:layout_width="40dp"
-            android:layout_height="25dp"
+            android:layout_width="45dp"
+            android:layout_height="30dp"
             android:layout_margin="5dp"
             app:layout_constraintStart_toEndOf="@+id/ivPlatLogo"
             app:layout_constraintTop_toBottomOf="@+id/tvPlatform" />
 
         <ImageView
             android:id="@+id/ivPlatLogo3"
-            android:layout_width="40dp"
-            android:layout_height="25dp"
+            android:layout_width="45dp"
+            android:layout_height="30dp"
             android:layout_margin="5dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/favCardView"
@@ -157,16 +157,16 @@
 
         <ImageView
             android:id="@+id/ivPlatLogo4"
-            android:layout_width="40dp"
-            android:layout_height="25dp"
+            android:layout_width="45dp"
+            android:layout_height="30dp"
             android:layout_margin="5dp"
             app:layout_constraintStart_toEndOf="@+id/ivPlatLogo3"
             app:layout_constraintTop_toBottomOf="@+id/ivPlatLogo2" />
 
         <ImageView
             android:id="@+id/ivPlatLogo5"
-            android:layout_width="40dp"
-            android:layout_height="25dp"
+            android:layout_width="45dp"
+            android:layout_height="30dp"
             android:layout_margin="5dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/favCardView"
@@ -174,8 +174,8 @@
 
         <ImageView
             android:id="@+id/ivPlatLogo6"
-            android:layout_width="40dp"
-            android:layout_height="25dp"
+            android:layout_width="45dp"
+            android:layout_height="30dp"
             android:layout_margin="5dp"
             app:layout_constraintStart_toEndOf="@+id/ivPlatLogo5"
             app:layout_constraintTop_toBottomOf="@+id/ivPlatLogo4" />
