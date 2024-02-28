@@ -9,6 +9,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.CompoundButton
 import androidx.core.os.bundleOf
 import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.viewModels
@@ -22,6 +23,7 @@ import com.example.gamelista.data.Repository
 import com.example.gamelista.databinding.FragmentFavBinding
 import com.example.gamelista.model.Game
 import com.example.gamelista.model.FavGameProvider
+import com.google.android.material.chip.Chip
 
 class FavFragment : Fragment() {
 
@@ -51,6 +53,7 @@ class FavFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        filterChips()
         searchInList()
         initRecyclerView()
         configSwipe()
@@ -90,9 +93,47 @@ class FavFragment : Fragment() {
     }
 
     private fun searchInList() {
-        binding.etFilter.addTextChangedListener { userFilter ->
-            viewModel.searchInList(userFilter.toString())
+        binding.etFilter.addTextChangedListener { userSearch ->
+            viewModel.searchInList(userSearch.toString())
         }
+    }
+
+    private fun filterChips() {
+        binding.chipGroup.setOnCheckedChangeListener { group, checkedId ->
+            // Comprueba si no se ha seleccionado ningún chip
+            if (checkedId == View.NO_ID) {
+                // Muestra la lista completa de favoritos
+                viewModel.getListGames()
+            } else {
+                // Si se ha seleccionado un chip, aplica el filtro correspondiente
+                when (checkedId) {
+                    R.id.chipCompletado -> {
+                        // Lógica para filtrar por "Completado"
+                        filterByStatus(GameStatus.COMPLETADO)
+                    }
+                    R.id.chipPendiente -> {
+                        // Lógica para filtrar por "Pendiente"
+                        filterByStatus(GameStatus.PENDIENTE)
+                    }
+                    R.id.chipAbandonado -> {
+                        // Lógica para filtrar por "Abandonado"
+                        filterByStatus(GameStatus.ABANDONADO)
+                    }
+                    R.id.chipJugando -> {
+                        // Lógica para filtrar por "Jugando"
+                        filterByStatus(GameStatus.JUGANDO)
+                    }
+                    R.id.chipSC -> {
+                        // Lógica para filtrar por "Sin Clasificar"
+                        filterByStatus(GameStatus.SIN_CLASIFICAR)
+                    }
+                }
+            }
+        }
+    }
+
+    private fun filterByStatus(status: GameStatus) {
+        viewModel.filterByStatus(status)
     }
 
     private fun initRecyclerView() {

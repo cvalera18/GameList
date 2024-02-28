@@ -192,10 +192,18 @@ return@withContext listOf()
             }
     }
 
-    fun filterFavoriteGames(userFilter: String): List<Game> {
+    fun searchFavoriteGames(userFilter: String): List<Game> {
         val filteredGames = gamesList
             .filter { game ->
                 game.fav && game.titulo.lowercase().contains(userFilter.lowercase())
+            }
+        return filteredGames
+    }
+
+    fun getGamesByStatus(status: GameStatus): List<Game> {
+        val filteredGames = getFavoriteGames()
+            .filter { game ->
+                status == game.status
             }
         return filteredGames
     }
@@ -285,6 +293,7 @@ return@withContext listOf()
         currentPage++
         shouldRequestNewPage = true
     }
+
 //    private fun createGamesFromApi(apiGames: List<com.example.gamelista.data.model.NetworkGame>): List<Game> {
 //        return apiGames
 //            .filter {

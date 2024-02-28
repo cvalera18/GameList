@@ -1,5 +1,6 @@
 package com.example.gamelista.ui.mylist
 
+import android.content.Context
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
@@ -16,6 +17,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.gamelista.model.GameStatus
 import com.example.gamelista.R
 import com.example.gamelista.adapter.GameListAdapter
+import com.example.gamelista.data.Repository
 import com.example.gamelista.databinding.FragmentMyListBinding
 import com.example.gamelista.model.Game
 
@@ -38,9 +40,15 @@ class MyListFragment : Fragment() {
         _binding = FragmentMyListBinding.inflate(inflater, container, false)
         return binding.root
     }
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        Repository.initialize(context.applicationContext)
+    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        filterChips()
+        searchInList()
         configFilter()
         initRecyclerView()
         configSwipe()
@@ -73,6 +81,49 @@ class MyListFragment : Fragment() {
                     binding.swipe.isRefreshing = false
                     isLoading = false
                 }, 2000)
+            }
+        }
+    }
+    private fun searchInList() {
+        binding.etFilter.addTextChangedListener { userSearch ->
+            viewModel.searchInList(userSearch.toString())
+        }
+    }
+
+    private fun filterByStatus(status: GameStatus) {
+        viewModel.filterByStatus(status)
+    }
+
+    private fun filterChips() {
+        binding.chipGroup.setOnCheckedChangeListener { group, checkedId ->
+            // Comprueba si no se ha seleccionado ningún chip
+            if (checkedId == View.NO_ID) {
+                // Muestra la lista completa de favoritos
+                viewModel.getListGames()
+            } else {
+                // Si se ha seleccionado un chip, aplica el filtro correspondiente
+                when (checkedId) {
+                    R.id.chipCompletado -> {
+                        // Lógica para filtrar por "Completado"
+                        filterByStatus(GameStatus.COMPLETADO)
+                    }
+                    R.id.chipPendiente -> {
+                        // Lógica para filtrar por "Pendiente"
+                        filterByStatus(GameStatus.PENDIENTE)
+                    }
+                    R.id.chipAbandonado -> {
+                        // Lógica para filtrar por "Abandonado"
+                        filterByStatus(GameStatus.ABANDONADO)
+                    }
+                    R.id.chipJugando -> {
+                        // Lógica para filtrar por "Jugando"
+                        filterByStatus(GameStatus.JUGANDO)
+                    }
+                    R.id.chipSC -> {
+                        // Lógica para filtrar por "Sin Clasificar"
+                        filterByStatus(GameStatus.SIN_CLASIFICAR)
+                    }
+                }
             }
         }
     }

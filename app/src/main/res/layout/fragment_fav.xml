@@ -27,35 +27,46 @@
 
         <HorizontalScrollView
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:layout_marginStart="3dp"
+            android:layout_marginEnd="3dp">
             <com.google.android.material.chip.ChipGroup
+                android:id="@+id/chipGroup"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 app:singleLine="true"
-                app:singleSelection="false">
+                app:singleSelection="true">
 
                 <com.google.android.material.chip.Chip
+                    android:id="@+id/chipCompletado"
                     style="@style/Widget.Material3.Chip.Filter"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Completado"/>
 
                 <com.google.android.material.chip.Chip
+                    android:id="@+id/chipPendiente"
                     style="@style/Widget.Material3.Chip.Filter"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Pendiente"/>
+
                 <com.google.android.material.chip.Chip
+                    android:id="@+id/chipAbandonado"
                     style="@style/Widget.Material3.Chip.Filter"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Abandonado"/>
+
                 <com.google.android.material.chip.Chip
+                    android:id="@+id/chipJugando"
                     style="@style/Widget.Material3.Chip.Filter"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Jugando"/>
+
                 <com.google.android.material.chip.Chip
+                    android:id="@+id/chipSC"
                     style="@style/Widget.Material3.Chip.Filter"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"

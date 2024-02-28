@@ -23,7 +23,14 @@ class FavViewModel: ViewModel() {
 
     fun searchInList(userFilter: String) {
         viewModelScope.launch {
-            val filteredGames = repository.filterFavoriteGames(userFilter)
+            val filteredGames = repository.searchFavoriteGames(userFilter)
+            _favGameList.value = filteredGames
+        }
+    }
+
+    fun filterByStatus(status: GameStatus) {
+        viewModelScope.launch {
+            val filteredGames = repository.getGamesByStatus(status)
             _favGameList.value = filteredGames
         }
     }
@@ -42,5 +49,6 @@ class FavViewModel: ViewModel() {
         _favGameList.value = repository.onListedItem(game, status)
         getListGames()
     }
+
 
 }
