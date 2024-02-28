@@ -66,7 +66,6 @@ class ListViewModel : ViewModel() {
 
     fun configFilter(userFilter: String) {
             searchQueryStateFlow.value = userFilter
-
     }
 
     fun pasarPagina() {

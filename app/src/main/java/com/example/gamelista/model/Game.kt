@@ -6,7 +6,7 @@ data class Game(
     val imagen: String,
     val plataforma: List<String>,
     var status: GameStatus,
-    val fav: Boolean,
+    var fav: Boolean,
     var sinopsis: String,
     var dev: String?,
     val release_date: String?

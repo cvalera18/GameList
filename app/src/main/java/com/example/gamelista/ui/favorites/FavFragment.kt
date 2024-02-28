@@ -79,16 +79,11 @@ class FavFragment : Fragment() {
             if (!isLoading) {
                 isLoading = true
                 binding.swipe.isRefreshing = true
-                viewModel.getListGames()
                 Handler(Looper.getMainLooper()).postDelayed({
                     binding.swipe.isRefreshing = false
                     isLoading = false
                 }, 2000)
             }
-
-//            Handler(Looper.getMainLooper()).postDelayed({
-//                binding.swipe.isRefreshing = false
-//            }, 2000)
         }
     }
 

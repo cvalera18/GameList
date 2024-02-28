@@ -42,19 +42,31 @@ class ListFragment : Fragment() {
         return binding.root
     }
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        getListGames()
+    }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         configFilter()
         initRecyclerView()
         configSwipe()
         observeGameList()
+        getListGames()
+    }
+
+    private fun getListGames() {
         viewModel.getListGames()
     }
 
-//    override fun onResume() {
-//        super.onResume()
-//        isLoading = false
-//    }
+    override fun onResume() {
+        super.onResume()
+        viewModel.getListGames()
+        isLoading = false
+    }
+
+
 
     private fun observeGameList() {
         viewModel.gameList.observe(viewLifecycleOwner) { gameList ->
@@ -96,7 +108,6 @@ class ListFragment : Fragment() {
         val decoration = DividerItemDecoration(activity, llmanager.orientation)
         binding.recyclerGameList.layoutManager = llmanager
         binding.recyclerGameList.adapter = adapter
-//        binding.recyclerGameList.addItemDecoration(decoration)
 
 //         Agregar ScrollListener para cargar más juegos al llegar al final de la lista
         binding.recyclerGameList.addOnScrollListener(object : RecyclerView.OnScrollListener() {
@@ -163,22 +174,3 @@ class ListFragment : Fragment() {
         findNavController().navigate(R.id.action_listFragment_to_detailFragment, bundle)
     }
 }
-//    private fun onItemSelected(game: Game) {
-//        findNavController().navigate(
-//            R.id.action_listFragment_to_detailFragment, bundleOf(
-//                "NAME" to game.titulo,
-//                "PLAT" to game.plataforma[0],
-//                "PLAT2" to game.plataforma[1],
-//                "PLAT3" to game.plataforma[2],
-//                "PLAT4" to game.plataforma[3],
-//                "PLAT5" to game.plataforma[4],
-//                "STATUS" to game.status.value,
-//                "PIC" to game.imagen,
-//                "SINOP" to game.sinopsis,
-//                "DEV" to game.dev,
-//                "FAV" to game.fav,
-//                "DATE" to game.release_date
-//            )
-//        )
-//    }
-//}

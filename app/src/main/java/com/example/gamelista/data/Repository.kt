@@ -69,9 +69,18 @@ return@withContext listOf()
                 .sort("rating_count", Sort.DESCENDING)
             try {
                 val wrapperGames: List<proto.Game> = IGDBWrapper.games(apicalypse)
-                createGamesFromWrapper(wrapperGames).also {
-                    cache = cache + mergeWithLocalList(it)
+                // Crear juegos desde el wrapper y actualizar los valores de 'fav' de los juegos favoritos
+                val gamesFromWrapper = createGamesFromWrapper(wrapperGames)
+                for (gameFromWrapper in gamesFromWrapper) {
+                    val existingGame = gamesList.find { it.id == gameFromWrapper.id }
+                    existingGame?.let { game ->
+                        if (game.fav != gameFromWrapper.fav) {
+                            game.fav = gameFromWrapper.fav
+                        }
+                    }
                 }
+                // Combinar los juegos de la API con la lista local y actualizar el caché
+                cache = cache + mergeWithLocalList(gamesFromWrapper)
                 shouldRequestNewPage = false
                 currentPage++ // Incrementar el número de página para la siguiente solicitud
                 return@withContext cache
@@ -200,8 +209,16 @@ return@withContext listOf()
         return filteredGames
     }
 
-    fun getGamesByStatus(status: GameStatus): List<Game> {
+    fun getFavGamesByStatus(status: GameStatus): List<Game> {
         val filteredGames = getFavoriteGames()
+            .filter { game ->
+                status == game.status
+            }
+        return filteredGames
+    }
+
+    fun getGamesByStatus(status: GameStatus): List<Game> {
+        val filteredGames = modelListedGameList
             .filter { game ->
                 status == game.status
             }

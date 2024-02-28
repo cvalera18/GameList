@@ -64,13 +64,6 @@
                         android:layout_height="wrap_content"
                         android:text="Jugando"/>
 
-                    <com.google.android.material.chip.Chip
-                        android:id="@+id/chipSC"
-                        style="@style/Widget.Material3.Chip.Filter"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Sin Clasificar"/>
-
                 </com.google.android.material.chip.ChipGroup>
 
             </HorizontalScrollView>

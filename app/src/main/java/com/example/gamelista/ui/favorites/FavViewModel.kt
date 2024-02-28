@@ -30,7 +30,7 @@ class FavViewModel: ViewModel() {
 
     fun filterByStatus(status: GameStatus) {
         viewModelScope.launch {
-            val filteredGames = repository.getGamesByStatus(status)
+            val filteredGames = repository.getFavGamesByStatus(status)
             _favGameList.value = filteredGames
         }
     }

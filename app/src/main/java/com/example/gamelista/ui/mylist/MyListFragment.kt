@@ -76,7 +76,6 @@ class MyListFragment : Fragment() {
             if (!isLoading) {
                 isLoading = true
                 binding.swipe.isRefreshing = true
-                viewModel.getListGames()
                 Handler(Looper.getMainLooper()).postDelayed({
                     binding.swipe.isRefreshing = false
                     isLoading = false
@@ -118,10 +117,6 @@ class MyListFragment : Fragment() {
                     R.id.chipJugando -> {
                         // Lógica para filtrar por "Jugando"
                         filterByStatus(GameStatus.JUGANDO)
-                    }
-                    R.id.chipSC -> {
-                        // Lógica para filtrar por "Sin Clasificar"
-                        filterByStatus(GameStatus.SIN_CLASIFICAR)
                     }
                 }
             }
