@@ -60,14 +60,6 @@ class ListFragment : Fragment() {
         viewModel.getListGames()
     }
 
-    override fun onResume() {
-        super.onResume()
-        viewModel.getListGames()
-        isLoading = false
-    }
-
-
-
     private fun observeGameList() {
         viewModel.gameList.observe(viewLifecycleOwner) { gameList ->
                 adapter.updateGames(gameList)
