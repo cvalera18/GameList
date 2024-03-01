@@ -49,7 +49,6 @@ class ListFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        getListGames()
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

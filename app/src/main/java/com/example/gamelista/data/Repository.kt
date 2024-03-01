@@ -60,7 +60,9 @@ return@withContext listOf()
             if (cache.isNotEmpty() && !shouldRequestNewPage) {
                 return@withContext mergeWithLocalList(cache)
             }
+
             IGDBWrapper.setCredentials(CLIENT_ID, AUTHORIZATION_TOKEN)
+
             val offset = (currentPage - 1) * pageSize // Calcular el offset
             val apicalypse = APICalypse()
                 .fields("*,platforms.platform_logo.*, involved_companies.company.*, cover.*, release_dates.*, external_games.*")
@@ -71,11 +73,15 @@ return@withContext listOf()
                 val wrapperGames: List<proto.Game> = IGDBWrapper.games(apicalypse)
                 // Crear juegos desde el wrapper y actualizar los valores de 'fav' de los juegos favoritos
                 val gamesFromWrapper = createGamesFromWrapper(wrapperGames)
+                val localGames = getGamesListFromSharedPreferences()
                 for (gameFromWrapper in gamesFromWrapper) {
-                    val existingGame = gamesList.find { it.id == gameFromWrapper.id }
+                    val existingGame = localGames.find { it.id == gameFromWrapper.id }
                     existingGame?.let { game ->
                         if (game.fav != gameFromWrapper.fav) {
-                            game.fav = gameFromWrapper.fav
+                            gameFromWrapper.fav = game.fav
+                        }
+                        if (game.status != gameFromWrapper.status) {
+                            gameFromWrapper.status = game.status
                         }
                     }
                 }
@@ -124,7 +130,10 @@ return@withContext listOf()
     }
 
     private fun mergeWithLocalList(remoteGames: List<Game>): List<Game> {
-        return (gamesList + remoteGames).distinctBy { it.id }
+        val newGames = remoteGames.map { game ->
+            gamesList.firstOrNull { localGame -> localGame.id == game.id } ?: game
+        }
+        return newGames
     }
 
     suspend fun searchGames(query: String): List<Game> = withContext(Dispatchers.IO) {
@@ -134,36 +143,103 @@ return@withContext listOf()
         if (query != lastQuery) {
             searchPage = 1
         }
-        val offset = (searchPage - 1) * pageSize // Calcular el offset
-        IGDBWrapper.setCredentials(CLIENT_ID, AUTHORIZATION_TOKEN)
+
+        val localGames = getGamesListFromSharedPreferences()
+
+        try {
+            val gamesFromApi = fetchGamesFromApi(query, searchPage)
+            val updatedGames = updateGamesWithLocalData(gamesFromApi, localGames)
+
+            cache = (cache + mergeWithLocalList(updatedGames)).filter { it.titulo.lowercase().contains(query.lowercase()) }
+            lastQuery = query
+            shouldRequestNewPage = false
+            searchPage++
+
+            cache
+        } catch (e: Exception) {
+            e.printStackTrace()
+            shouldRequestNewPage = false
+            listOf()
+        }
+    }
+
+    private fun fetchGamesFromApi(query: String, page: Int): List<Game> {
+        val offset = (page - 1) * pageSize
         val apicalypse = APICalypse()
             .fields("*,platforms.platform_logo.*, involved_companies.company.*, cover.*, release_dates.*, external_games.*")
             .search(query)
             .limit(pageSize)
             .offset(offset)
-//            .sort("rating_count", Sort.DESCENDING)
-        try {
-            val wrapperGames: List<proto.Game> = IGDBWrapper.games(apicalypse)
-            createGamesFromWrapper(wrapperGames).also {
-                cache = (cache + mergeWithLocalList(it)).filter { game ->
-                    game.titulo.lowercase().contains(query.lowercase())
-                }
-                lastQuery = query
-                shouldRequestNewPage = false
-                searchPage++ // Incrementar el número de página para la siguiente solicitud de búsqueda
-            }
-            cache
-        } catch (e: Exception) {
-            e.printStackTrace()
-            shouldRequestNewPage = false
-            return@withContext listOf()
+        // .sort("rating_count", Sort.DESCENDING) // Comentar o descomentar según necesidad
+
+        return IGDBWrapper.games(apicalypse).let { wrapperGames ->
+            createGamesFromWrapper(wrapperGames)
         }
     }
+    private fun updateGamesWithLocalData(gamesFromApi: List<Game>, localGames: List<Game>): List<Game> {
+        return gamesFromApi.map { gameFromApi ->
+            localGames.find { it.id == gameFromApi.id }?.let { localGame ->
+                gameFromApi.copy(fav = localGame.fav, status = localGame.status)
+            } ?: gameFromApi
+        }
+    }
+
+
+    /*
+suspend fun searchGames(query: String): List<Game> = withContext(Dispatchers.IO) {
+if (query == lastQuery && cache.isNotEmpty() && !shouldRequestNewPage) {
+return@withContext mergeWithLocalList(cache)
+}
+if (query != lastQuery) {
+searchPage = 1
+}
+val offset = (searchPage - 1) * pageSize // Calcular el offset
+IGDBWrapper.setCredentials(CLIENT_ID, AUTHORIZATION_TOKEN)
+val apicalypse = APICalypse()
+.fields("*,platforms.platform_logo.*, involved_companies.company.*, cover.*, release_dates.*, external_games.*")
+.search(query)
+.limit(pageSize)
+.offset(offset)
+//            .sort("rating_count", Sort.DESCENDING)
+try {
+val wrapperGames: List<proto.Game> = IGDBWrapper.games(apicalypse)
+val gamesFromWrapper = createGamesFromWrapper(wrapperGames)
+gamesFromWrapper.also {
+cache = (cache + mergeWithLocalList(it)).filter { game ->
+game.titulo.lowercase().contains(query.lowercase())
+}
+lastQuery = query
+shouldRequestNewPage = false
+searchPage++ // Incrementar el número de página para la siguiente solicitud de búsqueda
+}
+val localGames = getGamesListFromSharedPreferences()
+for (gameFromWrapper in gamesFromWrapper) {
+val existingGame = localGames.find { it.id == gameFromWrapper.id }
+existingGame?.let { game ->
+if (game.fav != gameFromWrapper.fav) {
+gameFromWrapper.fav = game.fav
+}
+if (game.status != gameFromWrapper.status) {
+gameFromWrapper.status = game.status
+}
+}
+}
+cache
+} catch (e: Exception) {
+e.printStackTrace()
+shouldRequestNewPage = false
+return@withContext listOf()
+}
+}
+*/
     private fun imageBuilder(imageID: String): String {
         return imageBuilder(imageID, ImageSize.COVER_BIG, ImageType.PNG)
     }
     private fun imageIconBuilder(imageIDs: List<String>): List<String> {
         return imageIDs.map { imageBuilder(it, ImageSize.COVER_SMALL, ImageType.PNG) }
+    }
+    private fun getGamesListFromSharedPreferences(): List<Game> {
+        return sharedPreferencesManager.getGameList()
     }
 
     fun onListedItem(game: Game, status: GameStatus): List<Game> {
