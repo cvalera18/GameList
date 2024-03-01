@@ -86,7 +86,7 @@ return@withContext listOf()
                     }
                 }
                 // Combinar los juegos de la API con la lista local y actualizar el caché
-                cache = cache + mergeWithLocalList(gamesFromWrapper)
+                cache = (cache + mergeWithLocalList(gamesFromWrapper)).distinctBy { it.id }
                 shouldRequestNewPage = false
                 currentPage++ // Incrementar el número de página para la siguiente solicitud
                 return@withContext cache
@@ -121,8 +121,8 @@ return@withContext listOf()
 //                    }?.joinToString(separator = ", ") { it.name }.orEmpty(),
                     status = GameStatus.SIN_CLASIFICAR,
                     fav = false,
-                    sinopsis = game.id.toString(),
-//                    sinopsis = game.summary,
+//                    sinopsis = game.id.toString(),
+                    sinopsis = game.summary,
                     dev = devsNames,
                     release_date = releaseDate
                 )
