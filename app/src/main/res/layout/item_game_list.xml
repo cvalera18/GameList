@@ -63,11 +63,12 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="12dp"
+            android:layout_marginEnd="12dp"
             android:layout_marginTop="10dp"
             android:text="The Last of Us Part 1"
             android:textSize="18sp"
             android:textStyle="bold"
-            app:layout_constraintEnd_toStartOf="@+id/ivPlatLogo3"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/ivGame"
             app:layout_constraintTop_toTopOf="parent" />
 
@@ -127,7 +128,7 @@
             app:layout_constraintEnd_toEndOf="@+id/ivPlatLogo4"
             app:layout_constraintStart_toStartOf="@+id/ivPlatLogo3"
             app:layout_constraintTop_toTopOf="parent"
-            android:visibility="invisible"/>
+            android:visibility="gone"/>
 
         <ImageView
             android:id="@+id/ivPlatLogo"
@@ -136,7 +137,7 @@
             android:layout_margin="5dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/favCardView"
-            app:layout_constraintTop_toBottomOf="@+id/tvPlatform"/>
+            app:layout_constraintTop_toBottomOf="@+id/tvGame" />
 
         <ImageView
             android:id="@+id/ivPlatLogo2"
@@ -144,7 +145,7 @@
             android:layout_height="30dp"
             android:layout_margin="5dp"
             app:layout_constraintStart_toEndOf="@+id/ivPlatLogo"
-            app:layout_constraintTop_toBottomOf="@+id/tvPlatform"/>
+            app:layout_constraintTop_toBottomOf="@+id/tvGame" />
 
         <ImageView
             android:id="@+id/ivPlatLogo3"

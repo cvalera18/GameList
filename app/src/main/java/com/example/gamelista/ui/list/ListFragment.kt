@@ -34,6 +34,11 @@ class ListFragment : Fragment() {
         Repository.initialize(context.applicationContext)
     }
 
+    override fun onResume() {
+        super.onResume()
+        isLoading = false
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -65,6 +70,7 @@ class ListFragment : Fragment() {
                 adapter.updateGames(gameList)
         }
     }
+
 
     private fun configSwipe() {
 

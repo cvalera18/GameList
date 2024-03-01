@@ -115,7 +115,8 @@ return@withContext listOf()
 //                    }?.joinToString(separator = ", ") { it.name }.orEmpty(),
                     status = GameStatus.SIN_CLASIFICAR,
                     fav = false,
-                    sinopsis = game.summary,
+                    sinopsis = game.id.toString(),
+//                    sinopsis = game.summary,
                     dev = devsNames,
                     release_date = releaseDate
                 )
@@ -123,15 +124,7 @@ return@withContext listOf()
     }
 
     private fun mergeWithLocalList(remoteGames: List<Game>): List<Game> {
-        val newGames = remoteGames.map { game ->
-            val found = gamesList.firstOrNull { localGame -> localGame.id == game.id }
-            if (found != null) {
-                found
-            } else {
-                game
-            }
-        }
-        return newGames
+        return (gamesList + remoteGames).distinctBy { it.id }
     }
 
     suspend fun searchGames(query: String): List<Game> = withContext(Dispatchers.IO) {
