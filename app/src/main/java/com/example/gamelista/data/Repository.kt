@@ -80,7 +80,7 @@ return@withContext listOf()
                     }
                 }
                 // Combinar los juegos de la API con la lista local y actualizar el caché
-                cache = cache + mergeWithLocalList(gamesFromWrapper)
+                cache = (cache + mergeWithLocalList(gamesFromWrapper)).distinctBy { it.id }
                 shouldRequestNewPage = false
                 currentPage++ // Incrementar el número de página para la siguiente solicitud
                 return@withContext cache
