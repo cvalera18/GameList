@@ -115,8 +115,8 @@ return@withContext listOf()
 //                    }?.joinToString(separator = ", ") { it.name }.orEmpty(),
                     status = GameStatus.SIN_CLASIFICAR,
                     fav = false,
-                    sinopsis = game.id.toString(),
-//                    sinopsis = game.summary,
+//                    sinopsis = game.id.toString(),
+                    sinopsis = game.summary,
                     dev = devsNames,
                     release_date = releaseDate
                 )
