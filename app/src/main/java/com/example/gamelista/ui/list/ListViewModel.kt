@@ -21,6 +21,7 @@ class ListViewModel : ViewModel() {
     private val _gameList = MutableLiveData<List<Game>>(emptyList())
     val gameList: LiveData<List<Game>> = _gameList
     private val searchQueryStateFlow = MutableStateFlow("")
+
     init {
         searchQueryStateFlow
             // Utiliza el flujo con debounce para esperar un tiempo antes de realizar la búsqueda
@@ -42,14 +43,11 @@ class ListViewModel : ViewModel() {
     fun getListGames() {
         //_gameList.value = GameProvider.modelGameList
         viewModelScope.launch {
-            if (searchQueryStateFlow.value.isNotEmpty()){
+            if (searchQueryStateFlow.value.isNotEmpty()) {
                 _gameList.value = repository.searchGames(searchQueryStateFlow.value)
             } else {
                 _gameList.value = repository.getGames()
             }
-//            val games = repository.getGames()
-//            _gameList.value = _gameList.value?.plus(games) ?: games
-            //_gameList.value = repository.searchGames("sonic")
         }
     }
 
@@ -63,13 +61,11 @@ class ListViewModel : ViewModel() {
         getListGames()
     }
 
-
     fun configFilter(userFilter: String) {
-            searchQueryStateFlow.value = userFilter
+        searchQueryStateFlow.value = userFilter
     }
 
     fun pasarPagina() {
         repository.pasarPagina()
     }
-
 }

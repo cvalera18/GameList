@@ -17,8 +17,7 @@ class GameListAdapter(
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): GameListViewHolder {
         val layoutInflater = LayoutInflater.from(parent.context)
         return GameListViewHolder(
-            layoutInflater.inflate(R.layout.item_game_list, parent, false),
-            this
+            layoutInflater.inflate(R.layout.item_game_list, parent, false), this
         )
     }
 
@@ -31,7 +30,7 @@ class GameListAdapter(
         )
     }
 
-    fun updateGames(gameList:List<Game>){
+    fun updateGames(gameList: List<Game>) {
         this.gameList = gameList
         notifyDataSetChanged()
     }

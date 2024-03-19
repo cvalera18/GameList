@@ -24,11 +24,10 @@ object Repository {
     private var gamesList: MutableList<Game> =
         mutableListOf()
     private var currentPage = 1
-    private val pageSize = 20
+    private const val PAGE_SIZE = 20
     private var searchPage = 1
     private var shouldRequestNewPage: Boolean = true
     private lateinit var sharedPreferencesManager: GameSharedPreferencesManager
-    private const val BASE_URL = "https://api.igdb.com/v4/"
     private const val CLIENT_ID = "9ka22ciij2034pew1ovudpz2esookx"
     private const val AUTHORIZATION_TOKEN = "6tncw4nq67y7oc4ep2qgkpe3q83j5g"
 
@@ -63,10 +62,10 @@ return@withContext listOf()
 
             IGDBWrapper.setCredentials(CLIENT_ID, AUTHORIZATION_TOKEN)
 
-            val offset = (currentPage - 1) * pageSize // Calcular el offset
+            val offset = (currentPage - 1) * PAGE_SIZE // Calcular el offset
             val apicalypse = APICalypse()
                 .fields("*,platforms.platform_logo.*, involved_companies.company.*, cover.*, release_dates.*, external_games.*")
-                .limit(pageSize)
+                .limit(PAGE_SIZE)
                 .offset(offset)
                 .sort("rating_count", Sort.DESCENDING)
             try {
@@ -164,11 +163,11 @@ return@withContext listOf()
     }
 
     private fun fetchGamesFromApi(query: String, page: Int): List<Game> {
-        val offset = (page - 1) * pageSize
+        val offset = (page - 1) * PAGE_SIZE
         val apicalypse = APICalypse()
             .fields("*,platforms.platform_logo.*, involved_companies.company.*, cover.*, release_dates.*, external_games.*")
             .search(query)
-            .limit(pageSize)
+            .limit(PAGE_SIZE)
             .offset(offset)
         // .sort("rating_count", Sort.DESCENDING) // Comentar o descomentar según necesidad
 
@@ -380,24 +379,26 @@ return@withContext listOf()
         shouldRequestNewPage = true
     }
 
-//    private fun createGamesFromApi(apiGames: List<com.example.gamelista.data.model.NetworkGame>): List<Game> {
-//        return apiGames
-//            .filter {
-//                it.id != 0 && it.name.isNotEmpty() && !it.platforms.isNullOrEmpty()
-//            }
-//            .map { game ->
-//                Game(
-//                    id = game.id.toLong(),
-//                    titulo = game.name,
-//                    imagen = game.backgroundImage,
-//                    plataforma = game.platforms?.filter { platform ->
-//                        !platform.platform.name.isNullOrEmpty()
-//                    }?.joinToString(separator = ", ") { it.platform.name!! }.orEmpty(),
-//                    status = GameStatus.SIN_CLASIFICAR,
-//                    fav = false,
-//                    sinopsis = "",
-//                    dev = ""
-//                )
-//            }
-//    }
+    /*
+    private fun createGamesFromApi(apiGames: List<com.example.gamelista.data.model.NetworkGame>): List<Game> {
+    return apiGames
+    .filter {
+    it.id != 0 && it.name.isNotEmpty() && !it.platforms.isNullOrEmpty()
+    }
+    .map { game ->
+    Game(
+    id = game.id.toLong(),
+    titulo = game.name,
+    imagen = game.backgroundImage,
+    plataforma = game.platforms?.filter { platform ->
+    !platform.platform.name.isNullOrEmpty()
+    }?.joinToString(separator = ", ") { it.platform.name!! }.orEmpty(),
+    status = GameStatus.SIN_CLASIFICAR,
+    fav = false,
+    sinopsis = "",
+    dev = ""
+    )
+    }
+    }
+    */
 }

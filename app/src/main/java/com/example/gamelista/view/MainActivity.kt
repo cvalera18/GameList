@@ -15,10 +15,6 @@ class MainActivity : AppCompatActivity() {
 
 
     private lateinit var binding: ActivityMainBinding
-    var myGameMutableList: MutableList<Game> = FavGameProvider.modelFavGameList.toMutableList()
-
-    private val gameViewModel : GameViewModel by viewModels()
-
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -28,7 +24,5 @@ class MainActivity : AppCompatActivity() {
         val bottomNavigationView = binding.navMenu
         val navHostFragment = supportFragmentManager.findFragmentById(R.id.frameContainer) as NavHostFragment
         bottomNavigationView.setupWithNavController(navHostFragment.navController)
-
-
     }
 }
